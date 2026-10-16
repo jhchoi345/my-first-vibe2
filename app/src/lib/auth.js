@@ -19,3 +19,8 @@ export function signIn(provider) {
     }, 700);
   });
 }
+
+// 기본 장치: 로그아웃 (설정은 첫 버전엔 로그아웃만, FLOWS 기본 장치). 여행과 사진은 이 브라우저에 그대로 남는다
+export function signOut() {
+  localStorage.removeItem(KEY);
+}
