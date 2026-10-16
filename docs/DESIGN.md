@@ -6,13 +6,17 @@ runtime_deps:
   icons: '@phosphor-icons/react'
   fonts: [Pretendard]
 colors:
-  primary: '#6e49da'
+  primary: '#8a4fd8'
   on-primary: '#ffffff'
-  primary-tint: '#ecebfc'
-  blue: '#377dfa'
-  blue-tint: '#f1f6fe'
-  link-blue: '#3282f0'
-  link-violet: '#6741d9'
+  primary-tint: '#f3edfc'
+  primary-strong: '#6a3fb8'
+  accent: '#c2367a'
+  accent-tint: '#fdebf3'
+  link: '#6a3fb8'
+  error: '#c4183c'
+  error-tint: '#fdecef'
+  success: '#2b7a3b'
+  success-tint: '#e9f6ec'
   ink: '#18181b'
   canvas: '#f4f4f5'
   surface: '#ffffff'
@@ -75,13 +79,13 @@ typography:
     fontWeight: 700
     lineHeight: 1.55
     letterSpacing: '-0.28px'
-    use: 'The one key figure on a trip card (dates or total spent), 21.7px line, in #377dfa'
+    use: 'The one key figure on a trip card (dates or total spent), 21.7px line, in #c2367a'
   link:
     fontSize: 14px
     fontWeight: 700
     lineHeight: 1.71
     letterSpacing: '-0.6px'
-    use: 'Text links under sections (#3282f0 default, #6741d9 alternate), 24px line'
+    use: 'Text links under sections, in #6a3fb8, 24px line'
   body:
     fontSize: 14px
     fontWeight: 400
@@ -120,7 +124,7 @@ spacing:
 components:
   primary-button:
     type: button
-    backgroundColor: '#6e49da'
+    backgroundColor: '#8a4fd8'
     textColor: '#ffffff'
     rounded: 8px
     padding: 1px 12px
@@ -128,32 +132,32 @@ components:
     typography: 14px / 700 / 21.7px Pretendard, letter-spacing -0.28px
     hover: white overlay rgba(255, 255, 255, 0.08) laid over the fill as a background-image
     pressed: white overlay rgba(255, 255, 255, 0.16)
-    focus: '2px solid #6e49da outline at 2px offset'
-    states: 'hover and pressed add a white overlay layer (the fill itself stays #6e49da), focus draws the violet ring; transition all 0s'
+    focus: '2px solid #8a4fd8 outline at 2px offset'
+    states: 'hover and pressed add a white overlay layer (the fill itself stays #8a4fd8), focus draws the lavender ring; transition all 0s'
     use: The one filled action on a screen (e.g. 여행 만들기 on 마그넷 보드), 40px tall
   gnb-menu:
     type: tab
     textColor: '#18181b'
     typography: 16px / 700 / 24.8px Pretendard, letter-spacing -0.32px
-    selected: 'fg #6e49da on the current section (마그넷 보드)'
+    selected: 'fg #8a4fd8 on the current section (마그넷 보드)'
     hover: the caret beside the label turns 180 degrees
     pressed: the caret turns 180 degrees
-    focus: '2px solid #6e49da outline at 2px offset'
-    states: 'hover and pressed flip the caret over a 150ms transition, the label colour does not change; focus draws the violet ring'
+    focus: '2px solid #8a4fd8 outline at 2px offset'
+    states: 'hover and pressed flip the caret over a 150ms transition, the label colour does not change; focus draws the lavender ring'
     use: Header menu items (마그넷 보드, 여행 지도); secondary items follow in lighter 14px
   tonal-button:
     type: button
-    backgroundColor: '#ecebfc'
-    textColor: '#6e49da'
+    backgroundColor: '#f3edfc'
+    textColor: '#6a3fb8'
     rounded: 8px
     padding: 1px 12px
     height: 40px
     typography: 14px / 700 / 21.7px Pretendard, letter-spacing -0.28px
     hover: black overlay rgba(0, 0, 0, 0.04)
     pressed: black overlay rgba(0, 0, 0, 0.08)
-    focus: '2px solid #6e49da outline at 2px offset'
+    focus: '2px solid #8a4fd8 outline at 2px offset'
     disabled: 'bg #e4e4e7, fg #aaaab1 when the action is not available yet'
-    states: 'hover and pressed add a black overlay layer, focus draws the violet ring'
+    states: 'hover and pressed add a black overlay layer, focus draws the lavender ring'
     use: Per-card action at the foot of each trip card (e.g. 다시 꺼내 볼까요?), 261 x 40
   icon-button:
     type: button
@@ -162,12 +166,12 @@ components:
     size: 40px x 40px
     hover: black overlay rgba(0, 0, 0, 0.04)
     pressed: black overlay rgba(0, 0, 0, 0.08)
-    focus: '2px solid #6e49da outline at -2px offset (inset)'
+    focus: '2px solid #8a4fd8 outline at -2px offset (inset)'
     states: 'same overlay steps as tonal-button; the focus ring sits inside the square'
     use: Square icon button beside the tonal action on each trip card (e.g. 골라서 링크 공유)
   soft-button:
     type: button
-    backgroundColor: '#f1f6fe'
+    backgroundColor: '#fdebf3'
     textColor: '#18181b'
     rounded: 8px
     padding: 6px 16px 6px 12px
@@ -175,8 +179,8 @@ components:
     typography: 14px / 400 / 16.1px Pretendard
     hover: opacity 0.8
     pressed: opacity 0.6
-    focus: '2px solid #6e49da outline at 2px offset'
-    states: 'opacity steps over a 0.2s ease transition; focus draws the violet ring'
+    focus: '2px solid #8a4fd8 outline at 2px offset'
+    states: 'opacity steps over a 0.2s ease transition; focus draws the lavender ring'
     use: Soft invitation above a list (e.g. 첫 여행을 붙여 볼까요? on an empty 마그넷 보드), 40px tall, with a small image before the label
   notice-row:
     type: button
@@ -186,8 +190,8 @@ components:
     padding: 0px 16px
     height: 56px
     typography: 14px / 400 / 16.1px Pretendard
-    focus: '2px solid #6e49da outline at 2px offset'
-    states: 'hover and pressed show no change; focus draws the violet ring'
+    focus: '2px solid #8a4fd8 outline at 2px offset'
+    states: 'hover and pressed show no change; focus draws the lavender ring'
     use: 'Full-width message row at the top of 마그넷 보드 (e.g. 오사카 여행 잘 다녀왔어요?), 56px tall'
   section-tab:
     type: tab
@@ -196,8 +200,8 @@ components:
     selected: 'fg #1d2024, 16px / 700 / 28px, letter-spacing -0.3px'
     hover: 'fg #8e8e8e'
     pressed: 'fg #8e8e8e'
-    focus: '2px solid #6e49da outline at 2px offset'
-    states: 'hover and pressed turn the label and its selected bar #8e8e8e; the selected tab does not change; focus draws the violet ring'
+    focus: '2px solid #8a4fd8 outline at 2px offset'
+    states: 'hover and pressed turn the label and its selected bar #8e8e8e; the selected tab does not change; focus draws the lavender ring'
     use: Section tabs inside a trip (사진 그리드, 지도, 경비)
   select:
     type: input
@@ -208,8 +212,8 @@ components:
     padding: 0px 28px 0px 10px
     height: 40px
     typography: 14px / 400 / 16.1px Pretendard
-    focus: '2px solid #6e49da outline at 2px offset'
-    states: 'hover draws nothing, pressed unmeasured, focus draws the violet ring'
+    focus: '2px solid #8a4fd8 outline at 2px offset'
+    states: 'hover draws nothing, pressed unmeasured, focus draws the lavender ring'
     use: Select fields in 여행 만들기 (dates, city), 40px tall
   trip-card:
     type: card
@@ -226,12 +230,12 @@ components:
     use: White panel inside the trip card holding the cover photo, city name, key figure, dates and the two buttons
   gnb-badge:
     type: badge
-    backgroundColor: '#377dfa'
+    backgroundColor: '#c2367a'
     textColor: '#ffffff'
     rounded: 9999px
     padding: 2px 6px
     typography: 10px / 700 / 16px Pretendard, letter-spacing -0.1px
-    use: Small blue pill beside a header menu item, 29 x 20
+    use: Small berry pill beside a header menu item, 29 x 20
   chip:
     type: badge
     backgroundColor: '#f4f4f5'
@@ -251,11 +255,11 @@ fonts:
 <!--
 Conversion note — design-brandfit, 2026-10-16
 - Reference: 8percent (에잇퍼센트) public website — https://www.8percent.kr/ , /disclosures/management/ , /deals/real-estate-special/ (reference capture verified 2026-09-30; collector at 1440x900, logged out, plus keyboard state probe).
-- Visual tokens (every colour value, type size/weight/line-height/tracking, radius, spacing, component measurements, overlay steps, motion timings) are kept unchanged from the reference.
+- Visual tokens (type size/weight/line-height/tracking, radius, spacing, component measurements, overlay steps, motion timings, and the neutral colours) are kept unchanged from the reference.
 - Meta, naming, rationale, voice and UI copy are rewritten for Momentrip from docs/VOICE.md and docs/PRODUCT.md.
 - Removed as duplicates of VOICE.md / PRODUCT.md: Brand Narrative, Personas, and the reference company's history and figures.
 - Renamed reference-specific components: login-button → primary-button, invest-button → tonal-button, cart-button → icon-button, invest-all-button → soft-button, notice-link → notice-row, disclosure-tab → section-tab, year-select → select, deal-card(-panel) → trip-card(-panel), deal-chip → chip; typography rate → figure.
-- Colour decision: values are kept for now. The calm violet-and-grey palette is in tension with Momentrip's bright, playful mood; a brand-colour revision is planned as a separate step (see docs/DECISIONS.md). Until then the accent is kept deliberately scarce and brightness comes from the user's photos and magnets.
+- Brand colour revision, 2026-10-16 (docs/DECISIONS.md D-018, reversing D-015): the reference's calm violet and blue were replaced with the "Soft Lavender" palette — still in the violet family the user prefers, but lighter and softer, with a berry pink accent, to match Momentrip's bright, warm, playful mood. Mapping from the reference values: primary #6e49da → #8a4fd8, primary-tint #ecebfc → #f3edfc, link-violet #6741d9 → primary-strong #6a3fb8, blue #377dfa → accent #c2367a, blue-tint #f1f6fe → accent-tint #fdebf3, link-blue #3282f0 → link #6a3fb8. Error and success colours are new (the reference had none). Tokens renamed with it: blue → accent, blue-tint → accent-tint, link-blue → link, link-violet → primary-strong. Grey neutrals are kept as they are.
 - Font: Pretendard is kept (open source, SIL OFL 1.1, full Korean coverage); no substitution needed.
 - Icons: the reference specifies no icon library or style; Phosphor is added for its rounded joins and friendly character.
 - Voice samples are unvalidated planning copy for a new service, taken verbatim from docs/VOICE.md.
@@ -266,19 +270,20 @@ Conversion note — design-brandfit, 2026-10-16
 
 ### Visual Theme & Atmosphere
 
-Momentrip (모먼트립) is a personal travel-memory collection: trips become magnets on a board, and each trip holds the user's own best photos, one-line notes, a route on a map, a memory video and a plain expense summary. The interface is the quiet frame around those memories. The user's photos and magnets are meant to be the brightest, most colourful things on the screen, so the chrome stays calm and steps back — like a friend who is excited about your trip but lets you tell it.
+Momentrip (모먼트립) is a personal travel-memory collection: trips become magnets on a board, and each trip holds the user's own best photos, one-line notes, a route on a map, a memory video and a plain expense summary. The interface is the light, warm frame around those memories. The user's photos and magnets are meant to be the brightest, most colourful things on the screen, so the chrome stays clean and lets one soft lavender do the inviting — like a friend who is excited about your trip but lets you tell it.
 
-The system is built from a `#18181b` ink on a `#f4f4f5` canvas, white panels, 8px and 12px corners and one violet, `#6e49da`, for the action that matters on each screen. A second, older set of neutrals (`#1d2024`, `#9ca5ad`, `#3c3c3c`, `#f1f3f5`) is kept for section tabs, the headline figure and the notice row.
+The system is built from a `#18181b` ink on a `#f4f4f5` canvas, white panels, 8px and 12px corners and one soft lavender, `#8a4fd8`, for the action that matters on each screen, with a berry pink, `#c2367a`, for figures. A second, older set of neutrals (`#1d2024`, `#9ca5ad`, `#3c3c3c`, `#f1f3f5`) is kept for section tabs, the headline figure and the notice row.
 
-Everything is set in Pretendard, and no element carries a drop shadow. Interaction is uniform. Filled buttons get a white overlay on hover and pressed, tonal and grey ones a black overlay, and every control draws the same 2px violet focus ring.
+Everything is set in Pretendard, and no element carries a drop shadow. Interaction is uniform. Filled buttons get a white overlay on hover and pressed, tonal and grey ones a black overlay, and every control draws the same 2px lavender focus ring.
 
 **Key Characteristics:**
-- One violet `#6e49da` for the one primary action (e.g. 여행 만들기), the selected header section, the tonal button label and the focus ring; its pale partner `#ecebfc` fills the tonal per-card button
-- A second brand colour, blue `#377dfa`, for the one key figure on a trip card and the header badge; its tint `#f1f6fe` fills the soft invitation button
+- One soft lavender `#8a4fd8` for the one primary action (e.g. 여행 만들기), the selected header section and the focus ring; its pale partner `#f3edfc` fills the tonal per-card button, labelled in the deeper `#6a3fb8`
+- A second brand colour, berry pink `#c2367a`, for the one key figure on a trip card and the header badge; its tint `#fdebf3` fills the soft invitation button. Text links use the deeper lavender `#6a3fb8`
+- Two state colours for system results only: error `#c4183c` on `#fdecef`, success `#2b7a3b` on `#e9f6ec`
 - Main neutrals: `#18181b` ink, `#f4f4f5` canvas, `#ffffff` panels, `#8e8e95` and `#aaaab1` secondary text, `#e4e4e7` disabled fill
 - Secondary neutrals for tabs, the headline figure and the notice row: `#1d2024`, `#9ca5ad`, `#3c3c3c`, `#4b525a`, `#f1f3f5`, `#dee2e5`
 - Pretendard only, 400 and 700, with negative tracking on nearly every role
-- State by overlay, not by new fills: white 8% and 16% on violet, black 4% and 8% on tonal and grey; focus is always a 2px `#6e49da` ring
+- State by overlay, not by new fills: white 8% and 16% on lavender, black 4% and 8% on tonal and grey; focus is always a 2px `#8a4fd8` ring
 - Flat: no element draws a `box-shadow`
 
 ### Primary tasks
@@ -294,36 +299,46 @@ Everything is set in Pretendard, and no element carries a drop shadow. Interacti
 ### Principles
 
 1. **Moments first.** *UI implication:* the cover photo and city name lead each trip card; one key figure (dates or total spent) sits beside them, everything else is ink or grey.
-2. **One action colour.** *UI implication:* `#6e49da` marks the one primary action, the selected section and focus; per-card actions use its tint `#ecebfc`.
-3. **Plain facts for money.** *UI implication:* 경비 정리 shows figures as they are, in tabbed plain pages, with no warning colours or judgement for overspending.
+2. **One action colour.** *UI implication:* `#8a4fd8` marks the one primary action, the selected section and focus; per-card actions use its tint `#f3edfc` with a `#6a3fb8` label.
+3. **Plain facts for money.** *UI implication:* 경비 정리 shows figures as they are, in tabbed plain pages, with no warning colours or judgement for overspending; the error and success colours never touch expense figures.
 4. **Consistent feedback.** *UI implication:* every button answers hover and press with the same overlay steps, and every control shows the same focus ring.
-5. **Flat and calm, so the memories can be bright.** *UI implication:* no shadows; white panels on a grey canvas; colour on the screen comes mostly from the user's photos and magnets.
+5. **Flat and soft, so the memories can be bright.** *UI implication:* no shadows; white panels on a grey canvas; one soft lavender invites, and the rest of the colour on screen comes from the user's photos and magnets.
 
 ### Usage Boundaries
 
 | Element | Use for | Never use for |
 |---|---|---|
-| primary (`#6e49da`) | One filled primary action per screen; the selected header section; every focus ring | Background fills, large areas, body text, magnet decoration |
-| primary-tint (`#ecebfc`) | Tonal per-card action buttons (with a `#6e49da` label) | Page or section backgrounds |
-| blue (`#377dfa`) | The one key figure on a trip card; the header badge | Buttons, links, or colouring expense figures to judge spending (no "over budget" signal) |
+| primary (`#8a4fd8`) | One filled primary action per screen; the selected header section; every focus ring | Background fills, large areas, body text, magnet decoration, error messages |
+| primary-strong (`#6a3fb8`) | The label of tonal per-card buttons; text links (`link`) | Button fills or headings |
+| primary-tint (`#f3edfc`) | Tonal per-card action buttons (with a `#6a3fb8` label) | Page or section backgrounds |
+| accent (`#c2367a`) | The one key figure on a trip card; the header badge | Button fills, or colouring expense figures to judge spending (no "over budget" signal) |
+| accent-tint (`#fdebf3`) | The soft invitation button above a list | Page backgrounds or selected states |
+| error (`#c4183c`, tint `#fdecef`) | System failures only, such as a photo that could not load or an upload that failed, with the solution in the copy | Expense figures, budgets, validation nagging, or decoration |
+| success (`#2b7a3b`, tint `#e9f6ec`) | A finished system result, such as a memory video or upload that is done | Expense figures ("saved" money), streaks or rewards |
 | stat type (40px / 400) | One headline figure per screen (e.g. the total in 경비 정리) | Titles or headings |
 | Elevation: flat | Every surface, magnets included; depth comes from `#ffffff` panels on the `#f4f4f5` canvas | Drop shadows to lift magnets, cards or modals |
 | legacy-* neutrals (`#1d2024`, `#9ca5ad`, `#4b525a`, `#f1f3f5`) | Section tabs and the notice row only | New surfaces or general text |
 
 ## Colors
 
-Every value below is kept unchanged from the 8percent reference capture (2026-09-30); the names and uses are Momentrip's. The values are interim: a brand-colour revision is planned as a separate step.
+The brand and state colours below are Momentrip's own "Soft Lavender" palette (revised 2026-10-16, D-018); the neutral and surface values are kept unchanged from the 8percent reference capture (2026-09-30). Contrast ratios are WCAG 2.x, measured against the surface each colour is used on.
 
 ### Primary
-- **Moment Violet** (`#6e49da`): The fill of the one primary action on a screen (40px tall, 8px radius, `#ffffff` label). It also marks the label of the current header section, the label of each tonal per-card button, and the 2px focus ring on every control. Used sparingly so the user's photos stay the brightest thing on screen.
+- **Soft Lavender** (`#8a4fd8`): The fill of the one primary action on a screen (40px tall, 8px radius, `#ffffff` label, 5.01:1). It also marks the label of the current header section (5.01:1 on white) and the 2px focus ring on every control (4.56:1 on the `#f4f4f5` canvas). Used sparingly so the user's photos stay the brightest thing on screen.
 - **On Primary** (`#ffffff`): The primary-button label, the header badge label and the trip-card panels.
-- **Violet Tint** (`#ecebfc`): The fill of the tonal per-card button, with a `#6e49da` label.
+- **Lavender Deep** (`#6a3fb8`): The label of each tonal per-card button (6.08:1 on `#f3edfc`) and the text-link colour (6.96:1 on white).
+- **Lavender Tint** (`#f3edfc`): The fill of the tonal per-card button, with a `#6a3fb8` label.
 
 ### Accent
-- **Figure Blue** (`#377dfa`): The one key figure on each trip card and the fill of the small header badge. It marks figures and news, not actions.
-- **Blue Tint** (`#f1f6fe`): The fill of the soft invitation button (e.g. 첫 여행을 붙여 볼까요?).
-- **Link Blue** (`#3282f0`): Text links. Never a button fill.
-- **Link Violet** (`#6741d9`): The alternate text-link colour.
+- **Berry** (`#c2367a`): The one key figure on each trip card (5.12:1 on white) and the fill of the small header badge (`#ffffff` label, 5.12:1). It marks figures and news, not actions, and never means a warning.
+- **Berry Tint** (`#fdebf3`): The fill of the soft invitation button (e.g. 첫 여행을 붙여 볼까요?), with a `#18181b` label (15.48:1).
+- **Link** (`#6a3fb8`): Text links (6.96:1 on white), the same value as Lavender Deep. Never a button fill.
+
+### State
+- **Error** (`#c4183c`): Text and icon of a system error message (5.93:1 on white, 5.20:1 on its tint). It sits close to the berry accent in hue, so an error is never colour alone: it always comes on its `#fdecef` row with an icon and copy that says what happened.
+- **Error Tint** (`#fdecef`): The fill behind an error message row.
+- **Success** (`#2b7a3b`): Text and icon of a finished system result (5.32:1 on white, 4.77:1 on its tint).
+- **Success Tint** (`#e9f6ec`): The fill behind a success message row.
 
 ### Neutral & Surface
 - **Canvas** (`#f4f4f5`): The body background, the trip-card frame, the icon button and the chips.
@@ -366,7 +381,7 @@ Every value below is kept unchanged from the 8percent reference capture (2026-09
 | Tab | Pretendard | 16px | 400 | 24px (1.5) | -0.4px | Unselected section tabs, `#9ca5ad` |
 | Link | Pretendard | 14px | 700 | 24px (1.71) | -0.6px | Text links |
 | Button | Pretendard | 14px | 700 | 21.7px (1.55) | -0.28px | 여행 만들기, 붙여 볼까요? |
-| Figure | Pretendard | 14px | 700 | 21.7px (1.55) | -0.28px | Trip-card key figure, `#377dfa` |
+| Figure | Pretendard | 14px | 700 | 21.7px (1.55) | -0.28px | Trip-card key figure, `#c2367a` |
 | Footer | Pretendard | 14px | 400 | 21.7px (1.55) | -0.28px | Footer values, `#8e8e95` |
 | Body | Pretendard | 14px | 400 | 16.1px (1.15) | normal | Document default |
 | Meta | Pretendard | 12px | 400 | 19.2px (1.6) | -0.12px | Trip-card meta, `#aaaab1` |
@@ -375,7 +390,7 @@ Every value below is kept unchanged from the 8percent reference capture (2026-09
 ### Principles
 - **One family, two main weights**: 400 for reading and 700 for anything that names or acts; the only 40px figure stays at 400.
 - **Tight by default**: most roles track about -2% of their size (-0.28px at 14px, -0.32px at 16px); headings go further (-0.6px at 24px, -0.9px at 40px).
-- **Numbers carry colour sparingly**: the key figure on a trip card is the only figure in blue; everything else on a card is ink or grey.
+- **Numbers carry colour sparingly**: the key figure on a trip card is the only figure in berry; everything else on a card is ink or grey.
 
 ## Iconography
 
@@ -433,7 +448,7 @@ Not captured.
 | Panel | `#ffffff` | Trip-card panels, selects |
 | Overlay | white 8% / 16%, black 4% / 8% layers | Hover and pressed on buttons |
 
-**Shadow Philosophy**: no element draws a box-shadow (the select's hover adds an inset shadow of zero size, which draws nothing). Emphasis comes from the violet and blue, from white panels on grey, and from the state overlays. Magnets stay flat too; their charm comes from the photo and the city name, not from lift.
+**Shadow Philosophy**: no element draws a box-shadow (the select's hover adds an inset shadow of zero size, which draws nothing). Emphasis comes from the lavender and berry, from white panels on grey, and from the state overlays. Magnets stay flat too; their charm comes from the photo and the city name, not from lift.
 
 ## Motion & Easing
 
@@ -444,7 +459,7 @@ The primary, tonal and icon buttons, the notice row and the section tabs compute
 ### Buttons
 
 **Primary**
-- Background: `#6e49da`
+- Background: `#8a4fd8`
 - Text: `#ffffff`
 - Radius: 8px
 - Padding: 1px 12px
@@ -452,19 +467,19 @@ The primary, tonal and icon buttons, the notice row and the section tabs compute
 - Font: 14px / 700 / 21.7px Pretendard, letter-spacing -0.28px
 - Hover: white overlay `rgba(255, 255, 255, 0.08)` over the fill
 - Pressed: white overlay `rgba(255, 255, 255, 0.16)`
-- Focus: 2px solid `#6e49da` outline at 2px offset
+- Focus: 2px solid `#8a4fd8` outline at 2px offset
 - Use: the one filled action on a screen, e.g. 여행 만들기
 
 **Tonal**
-- Background: `#ecebfc`
-- Text: `#6e49da`
+- Background: `#f3edfc`
+- Text: `#6a3fb8`
 - Radius: 8px
 - Padding: 1px 12px
 - Height: 40px
 - Font: 14px / 700 / 21.7px Pretendard, letter-spacing -0.28px
 - Hover: black overlay `rgba(0, 0, 0, 0.04)`
 - Pressed: black overlay `rgba(0, 0, 0, 0.08)`
-- Focus: 2px solid `#6e49da` outline at 2px offset
+- Focus: 2px solid `#8a4fd8` outline at 2px offset
 - Disabled: background `#e4e4e7`, text `#aaaab1` (action not available yet)
 - Use: per-card action on each trip card, e.g. 다시 꺼내 볼까요?
 
@@ -473,11 +488,11 @@ The primary, tonal and icon buttons, the notice row and the section tabs compute
 - Radius: 8px
 - Size: 40 × 40
 - Hover / pressed: black overlay 4% / 8%
-- Focus: 2px solid `#6e49da` outline at -2px offset
+- Focus: 2px solid `#8a4fd8` outline at -2px offset
 - Use: beside the tonal action, e.g. 골라서 링크 공유
 
 **Soft**
-- Background: `#f1f6fe`
+- Background: `#fdebf3`
 - Text: `#18181b`
 - Radius: 8px
 - Padding: 6px 16px 6px 12px
@@ -485,7 +500,7 @@ The primary, tonal and icon buttons, the notice row and the section tabs compute
 - Font: 14px / 400 / 16.1px Pretendard
 - Hover: opacity 0.8
 - Pressed: opacity 0.6
-- Focus: 2px solid `#6e49da` outline at 2px offset
+- Focus: 2px solid `#8a4fd8` outline at 2px offset
 - Use: a soft invitation above a list, e.g. 첫 여행을 붙여 볼까요?
 
 **Notice row**
@@ -495,23 +510,23 @@ The primary, tonal and icon buttons, the notice row and the section tabs compute
 - Padding: 0px 16px
 - Height: 56px
 - Font: 14px / 400 / 16.1px Pretendard
-- States: no hover or pressed change; focus draws the violet ring
+- States: no hover or pressed change; focus draws the lavender ring
 - Use: a full-width message row at the top of 마그넷 보드, e.g. 오사카 여행 잘 다녀왔어요?
 
 ### Tabs & Navigation
 
 **Header menu**
-- Text: `#18181b`; the current section `#6e49da`
+- Text: `#18181b`; the current section `#8a4fd8`
 - Font: 16px / 700 / 24.8px Pretendard, letter-spacing -0.32px
 - Hover / pressed: the caret beside the label turns 180 degrees; the colour does not change
-- Focus: 2px solid `#6e49da` outline at 2px offset
+- Focus: 2px solid `#8a4fd8` outline at 2px offset
 - Use: 마그넷 보드 and 여행 지도, followed by lighter 14px secondary items
 
 **Section tabs**
 - Text: `#9ca5ad`, 16px / 400 / 24px, letter-spacing -0.4px
 - Selected: `#1d2024`, 16px / 700 / 28px, letter-spacing -0.3px
 - Hover / pressed: `#8e8e8e` (label and its bar)
-- Focus: 2px solid `#6e49da` outline at 2px offset
+- Focus: 2px solid `#8a4fd8` outline at 2px offset
 - Use: 사진 그리드, 지도, 경비 inside a trip
 
 ### Inputs
@@ -524,7 +539,7 @@ The primary, tonal and icon buttons, the notice row and the section tabs compute
 - Padding: 0px 28px 0px 10px
 - Height: 40px
 - Font: 14px / 400 / 16.1px Pretendard
-- Focus: 2px solid `#6e49da` outline at 2px offset
+- Focus: 2px solid `#8a4fd8` outline at 2px offset
 - Use: select fields in 여행 만들기 (dates, city)
 
 ### Cards & Badges
@@ -532,11 +547,11 @@ The primary, tonal and icon buttons, the notice row and the section tabs compute
 **Trip card**
 - Frame: `#f4f4f5`, 12px radius, 4px 4px 8px padding, 349 × 285
 - Panel: `#ffffff`, 12px radius, 16px padding
-- Key figure `#377dfa` 14px / 700; city name `#18181b` 16px / 700; meta `#aaaab1` 12px; secondary figures `#8e8e95` 12px
+- Key figure `#c2367a` 14px / 700; city name `#18181b` 16px / 700; meta `#aaaab1` 12px; secondary figures `#8e8e95` 12px
 - Use: every trip on 마그넷 보드; the whole card is clickable (role=button)
 
 **Header badge**
-- Background: `#377dfa`
+- Background: `#c2367a`
 - Text: `#ffffff`
 - Radius: 9999px
 - Padding: 2px 6px
@@ -557,16 +572,18 @@ Only these states are specified; nothing else is defined here.
 
 | State | Treatment |
 |---|---|
-| **Hover / pressed (filled)** | The primary button keeps `#6e49da` and gains a white overlay, 8% on hover and 16% pressed. |
+| **Hover / pressed (filled)** | The primary button keeps `#8a4fd8` and gains a white overlay, 8% on hover and 16% pressed. |
 | **Hover / pressed (tonal, grey)** | The tonal and icon buttons gain a black overlay, 4% and 8%. |
 | **Hover / pressed (soft)** | The soft button: opacity 0.8 and 0.6. |
 | **Hover / pressed (tabs)** | Unselected section tabs turn `#8e8e8e`; the header menu flips its caret. |
 | **No change** | The notice row and the selected section tab show no hover or pressed change. |
-| **Focus** | Every control draws a 2px solid `#6e49da` outline at 2px offset (the icon button at -2px). |
-| **Selected** | Header section `#6e49da`; section tab `#1d2024` at weight 700. |
+| **Focus** | Every control draws a 2px solid `#8a4fd8` outline at 2px offset (the icon button at -2px). |
+| **Selected** | Header section `#8a4fd8`; section tab `#1d2024` at weight 700. |
 | **Disabled** | Tonal button not available yet: `#e4e4e7` fill, `#aaaab1` label. |
+| **Error** | A system failure (e.g. a photo that could not load): `#c4183c` text and icon on a `#fdecef` row; never on expense figures. |
+| **Success** | A finished system result (e.g. a memory video that is done): `#2b7a3b` text and icon on a `#e9f6ec` row; never on expense figures. |
 
-Error, empty, loading and success states have no visual treatment yet (see Known Gaps). Their copy comes from docs/VOICE.md:
+Empty and loading states have no visual treatment yet (see Known Gaps). The copy for each state comes from docs/VOICE.md:
 
 | State | Copy |
 |---|---|
@@ -579,19 +596,21 @@ The select's pressed state is unmeasured.
 ## Do's and Don'ts
 
 ### Do
-- Use `#6e49da` for the one primary action, the selected section and every focus ring
-- Pair `#ecebfc` with a `#6e49da` label for per-card actions such as 다시 꺼내 볼까요?
+- Use `#8a4fd8` for the one primary action, the selected section and every focus ring
+- Pair `#f3edfc` with a `#6a3fb8` label for per-card actions such as 다시 꺼내 볼까요?
 - Show state with overlays: white 8% / 16% on filled buttons, black 4% / 8% on tonal and grey ones
-- Put the one key figure on a card in `#377dfa` and everything else in ink or grey
+- Put the one key figure on a card in `#c2367a` and everything else in ink or grey
+- Show a system error in `#c4183c` on `#fdecef` and a finished result in `#2b7a3b` on `#e9f6ec`, always with the copy that says what happened
 - Set everything in Pretendard with tight negative tracking
 - Keep surfaces flat: `#ffffff` panels on a `#f4f4f5` canvas, and let photos and magnets carry the colour
 
 ### Don't
-- Don't make `#3282f0` the action colour; it is a text link, not a button fill
+- Don't make `#c2367a` the action colour; it marks figures and badges, not buttons
 - Don't add drop shadows, not even to magnets
-- Don't invent new state colours; the system darkens or lightens with overlays and a violet ring
+- Don't invent new state colours; hover and pressed darken or lighten with overlays, focus is the lavender ring, and only error and success have their own colours
+- Don't use the berry `#c2367a` for error messages or warnings; errors use `#c4183c` on a `#fdecef` row with an icon
 - Don't use the reference banner campaign colours as interface colours
-- Don't colour expense figures to judge spending (no red "over budget", no green "saved")
+- Don't colour expense figures to judge spending (no `#c4183c` "over budget", no `#2b7a3b` "saved")
 - Don't rely on colour alone; pair each figure with its label
 
 ## Voice & Tone
@@ -626,36 +645,37 @@ Momentrip's voice is an **excited, warm travel mate**: glad about your trip, qui
 ## Agent Prompt Guide
 
 ### Quick Color Reference
-- Primary action, selection, focus: `#6e49da` with `#ffffff`; tonal `#ecebfc`
-- Key figures: `#377dfa`; soft button `#f1f6fe`
+- Primary action, selection, focus: `#8a4fd8` with `#ffffff`; tonal `#f3edfc` with a `#6a3fb8` label
+- Key figures and badge: `#c2367a`; soft button `#fdebf3`; links `#6a3fb8`
+- System states: error `#c4183c` on `#fdecef`, success `#2b7a3b` on `#e9f6ec`
 - Text: `#18181b` default, `#8e8e95` secondary, `#aaaab1` meta
 - Canvas `#f4f4f5`, panels `#ffffff`, disabled `#e4e4e7`
 - Tabs and notice row: `#1d2024` selected tab, `#9ca5ad` tabs, `#3c3c3c` headline figure, `#dee2e5` select border
 
 ### Example Component Prompts
-- "Create a primary button labelled 여행 만들기: `#6e49da` background, `#ffffff` 14px Pretendard label at weight 700 with -0.28px tracking, 8px radius, 1px 12px padding, 40px tall; on hover lay a white 8% overlay over it, 16% when pressed; focus is a 2px solid `#6e49da` outline at 2px offset."
-- "Create a trip card: a `#f4f4f5` frame with 12px radius and 4px padding around a white panel with 16px padding; cover photo, city name 16px/700 `#18181b`, key figure 14px/700 `#377dfa`, meta 12px `#aaaab1`; at the foot a 40px `#ecebfc` button labelled 다시 꺼내 볼까요? in `#6e49da` (black 4% overlay on hover) beside a 40 × 40 `#f4f4f5` share icon button. No shadow."
+- "Create a primary button labelled 여행 만들기: `#8a4fd8` background, `#ffffff` 14px Pretendard label at weight 700 with -0.28px tracking, 8px radius, 1px 12px padding, 40px tall; on hover lay a white 8% overlay over it, 16% when pressed; focus is a 2px solid `#8a4fd8` outline at 2px offset."
+- "Create a trip card: a `#f4f4f5` frame with 12px radius and 4px padding around a white panel with 16px padding; cover photo, city name 16px/700 `#18181b`, key figure 14px/700 `#c2367a`, meta 12px `#aaaab1`; at the foot a 40px `#f3edfc` button labelled 다시 꺼내 볼까요? in `#6a3fb8` (black 4% overlay on hover) beside a 40 × 40 `#f4f4f5` share icon button. No shadow."
 - "Build section tabs 사진 그리드 / 지도 / 경비: unselected 16px/400 `#9ca5ad`, hover `#8e8e8e`; selected 16px/700 `#1d2024`."
+- "Show an error row: full width, 16px radius, `#fdecef` fill, a Phosphor warning icon and the text 사진을 불러오지 못했어요. 잠시 후 다시 올려 볼까요? in 14px/400 `#c4183c`; no emoji."
 
 ### Iteration Guide
-1. One violet (`#6e49da`) for action, selection and focus — one primary action per screen
-2. Blue (`#377dfa`) only for the key figure and badges, never to judge spending
-3. Overlays for hover and pressed, never new fills
+1. One soft lavender (`#8a4fd8`) for action, selection and focus — one primary action per screen
+2. Berry (`#c2367a`) only for the key figure and badges, never to judge spending or to warn
+3. Overlays for hover and pressed, never new fills; error `#c4183c` and success `#2b7a3b` only for system results
 4. Pretendard everywhere, tight tracking; Phosphor icons
-5. Flat grey canvas and white panels; colour comes from photos and magnets
+5. Flat grey canvas and white panels; one soft lavender invites, the rest of the colour comes from photos and magnets
 
 ---
 
 **Verified:** 2026-10-16 (design-brandfit conversion for Momentrip)
-**Visual tokens:** unchanged from the 8percent reference capture of 2026-09-30 — https://www.8percent.kr/ ; https://www.8percent.kr/disclosures/management/ ; https://www.8percent.kr/deals/real-estate-special/
+**Brand and state colours:** Momentrip "Soft Lavender" palette, revised 2026-10-16 (D-018)
+**Other visual tokens:** unchanged from the 8percent reference capture of 2026-09-30 — https://www.8percent.kr/ ; https://www.8percent.kr/disclosures/management/ ; https://www.8percent.kr/deals/real-estate-special/
 **Meta, voice and copy:** rewritten from docs/VOICE.md and docs/PRODUCT.md; voice samples are unvalidated planning copy
 
 ## Governance
 
 ### Known Gaps
 
-- **Contrast, `gnb-badge`.** Text `#ffffff` on `#377dfa` measures 3.83:1, below the WCAG AA 4.5:1 minimum for normal-size text. Recorded as measured, not adjusted.
-- **Brand colour.** The violet-and-grey values are interim; a revision toward Momentrip's brighter mood is planned as a separate step.
-- **Error and success colours.** The reference defines none; error, empty, loading and success states have copy but no visual treatment yet.
+- **Empty and loading states.** Both have copy but no visual treatment yet.
 - **Mobile breakpoints.** The reference was captured at desktop width only; Momentrip is mobile-first and has no breakpoint values yet.
 - **Icon style.** No stroke weight, size or fill rule is defined for Phosphor yet.
