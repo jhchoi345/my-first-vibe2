@@ -1,11 +1,11 @@
 // F1 ③ 여행 만들기 — 첫 방문엔 지난 여행만, 도시·날짜만 받는다 (D-023)
 // F6 ⑤ 여행 정보 고치기도 이 화면을 쓴다: onSave가 있으면 사진 선택 대신 [저장하기]
 import { useRef, useState } from 'react';
-import { ArrowLeft, Plus, X, Info } from '@phosphor-icons/react';
+import { Plus, X, Info } from '@phosphor-icons/react';
 import { html } from '../lib/html.js';
 import { go } from '../lib/router.js';
 import { today } from '../lib/trips.js';
-import { Screen, PrimaryButton, NoticeRow } from '../ui.js';
+import { InnerLayout, PrimaryButton, NoticeRow } from '../ui.js';
 
 const fieldClass = 'h-10 w-full rounded-control border border-select-border bg-surface px-3 text-body text-ink placeholder:text-faint';
 
@@ -56,14 +56,7 @@ export function TripNewScreen({ draft, setDraft, onPhotos, onSave, title = '지�
   }[error];
 
   return html`
-    <${Screen} className="pb-8 pt-5">
-      <header className="flex items-center gap-2">
-        <button type="button" aria-label="돌아가기" onClick=${() => go(backTo)}
-          className="btn-soft -ml-2 flex h-10 w-10 items-center justify-center rounded-control">
-          <${ArrowLeft} size=${22} />
-        </button>
-        <h1 className="text-card-title">${title}</h1>
-      </header>
+    <${InnerLayout} title=${title} onBack=${() => go(backTo)} className="pb-8 pt-1">
 
       <div className="mt-6 flex flex-col gap-2">
         <label className="text-button text-ink" htmlFor="city-0">어디로 다녀왔어요?</label>
@@ -101,5 +94,5 @@ export function TripNewScreen({ draft, setDraft, onPhotos, onSave, title = '지�
           : html`<${PrimaryButton} onClick=${openPicker}>사진 올리기</${PrimaryButton}>`}
       </div>
       <input ref=${fileRef} type="file" accept="image/*" multiple className="hidden" onChange=${onPicked} data-testid="photo-input" />
-    </${Screen}>`;
+    </${InnerLayout}>`;
 }

@@ -1,12 +1,12 @@
 // F1 ⑤ 베스트 고르기 — 미리 골라 두지 않음, 묶음마다 자유롭게, 전체 최소 1장 (D-024)
 // F6 ③ 다시 고르기도 이 화면: 고른 사진이 체크된 채 열리고, [사진 더 올리기]가 있다
 import { useRef, useState } from 'react';
-import { ArrowLeft, Check, MapPin, Info, Plus } from '@phosphor-icons/react';
+import { Check, MapPin, Info, Plus } from '@phosphor-icons/react';
 import { html } from '../lib/html.js';
 import { go } from '../lib/router.js';
 import { getTrip, updateTrip } from '../lib/trips.js';
 import { usePhotoUrl } from '../lib/photos.js';
-import { Screen, PrimaryButton, NoticeRow } from '../ui.js';
+import { Screen, InnerLayout, PrimaryButton, NoticeRow } from '../ui.js';
 
 function PickPhoto({ id, order, onToggle }) {
   const url = usePhotoUrl(id);
@@ -37,14 +37,10 @@ export function PickScreen({ tripId, onDone, onMorePhotos }) {
   }
 
   return html`
-    <div className="mx-auto flex min-h-[100dvh] w-full max-w-[430px] flex-col">
+    <${InnerLayout} bare title=${editing ? '사진 다시 고르기' : '베스트 고르기'}
+      onBack=${() => go(editing ? `/trip/${tripId}` : '/board')}>
       <div className="px-5 pt-5">
-        <button type="button" aria-label=${editing ? '여행 상세로 돌아가기' : '보드로 나가기'}
-          onClick=${() => go(editing ? `/trip/${tripId}` : '/board')}
-          className="btn-soft -ml-2 flex h-10 w-10 items-center justify-center rounded-control">
-          <${ArrowLeft} size=${22} />
-        </button>
-        <p className="mt-3 text-[18px] font-bold leading-[1.5] tracking-[-0.4px]">
+        <p className="text-[18px] font-bold leading-[1.5] tracking-[-0.4px]">
           같은 곳에서 찍은 사진끼리 모아 뒀어요.<br />마음에 드는 사진을 골라 주세요.
         </p>
         ${editing && html`
@@ -76,5 +72,5 @@ export function PickScreen({ tripId, onDone, onMorePhotos }) {
           다 골랐어요${picked.length ? ` · ${picked.length}장` : ''}
         </${PrimaryButton}>
       </div>
-    </div>`;
+    </${InnerLayout}>`;
 }

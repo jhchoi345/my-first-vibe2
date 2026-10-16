@@ -1,11 +1,11 @@
 // F1 ⑦ 여행 상세 — 위에 작은 경로 지도, 아래 고른 베스트만 3열 그리드 (목표 순간)
 import { useEffect, useState } from 'react';
-import { ArrowLeft, DotsThree, MapPin, X } from '@phosphor-icons/react';
+import { DotsThree, MapPin, X } from '@phosphor-icons/react';
 import { html } from '../lib/html.js';
 import { go } from '../lib/router.js';
 import { getTrip, updateTrip, deleteTrip, formatRange } from '../lib/trips.js';
 import { usePhotoUrl, deletePhotos } from '../lib/photos.js';
-import { Screen, BottomSheet, PrimaryButton, SecondaryButton } from '../ui.js';
+import { Screen, InnerLayout, BottomSheet, PrimaryButton, SecondaryButton } from '../ui.js';
 
 // 흉내: 지도 — 지도 모양 그림 위에 사진 위치를 점과 선으로 (SETUP)
 function RouteMap({ points }) {
@@ -83,18 +83,12 @@ export function TripDetailScreen({ tripId }) {
     .sort((a, b) => a.takenAt.localeCompare(b.takenAt));
 
   return html`
-    <div className="mx-auto min-h-[100dvh] w-full max-w-[430px] pb-10">
-      <header className="flex items-center gap-2 px-5 pt-5">
-        <button type="button" aria-label="보드로 돌아가기" onClick=${() => go('/board')}
-          className="btn-soft -ml-2 flex h-10 w-10 items-center justify-center rounded-control">
-          <${ArrowLeft} size=${22} />
-        </button>
-        <h1 className="min-w-0 flex-1 text-card-title">${trip.cities[0]} · ${formatRange(trip.start, trip.end)}</h1>
-        <button type="button" aria-label="여행 고치기" onClick=${() => setSheet('menu')}
-          className="btn-soft -mr-2 flex h-10 w-10 items-center justify-center rounded-control">
-          <${DotsThree} size=${24} weight="bold" />
-        </button>
-      </header>
+    <${InnerLayout} bare className="pb-10" title=${`${trip.cities[0]} · ${formatRange(trip.start, trip.end)}`}
+      onBack=${() => go('/board')}
+      right=${html`<button type="button" aria-label="여행 고치기" onClick=${() => setSheet('menu')}
+        className="btn-soft -mr-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-control">
+        <${DotsThree} size=${24} weight="bold" />
+      </button>`}>
       <div className="mt-4 px-5"><${RouteMap} points=${points} /></div>
       <div className="mt-4 grid grid-cols-3 gap-0.5">
         ${trip.picked.map((id) => html`<${GridPhoto} key=${id} id=${id} onOpen=${() => setOpen(id)} />`)}
@@ -130,5 +124,5 @@ export function TripDetailScreen({ tripId }) {
             <${SecondaryButton} onClick=${() => setSheet(null)}>그대로 두기</${SecondaryButton}>
           </div>
         </${BottomSheet}>`}
-    </div>`;
+    </${InnerLayout}>`;
 }

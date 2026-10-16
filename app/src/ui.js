@@ -38,16 +38,28 @@ export function TopBar({ title, onBack, right }) {
   return html`
     <header className="sticky top-0 z-10 border-b border-disabled bg-surface" style=${{ paddingTop: 'env(safe-area-inset-top, 0px)' }}>
       <div className="mx-auto flex h-14 w-full max-w-[430px] items-center gap-2 px-5">
-        ${onBack
-          ? html`<button type="button" aria-label="뒤로" onClick=${onBack}
-              className="btn-soft -ml-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-control">
-              <${ArrowLeft} size=${22} />
-            </button>
-            <h1 className="min-w-0 flex-1 truncate text-card-title">${title}</h1>`
+        ${onBack && html`<button type="button" aria-label="뒤로" onClick=${onBack}
+          className="btn-soft -ml-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-control">
+          <${ArrowLeft} size=${22} />
+        </button>`}
+        ${title
+          ? html`<h1 className="min-w-0 flex-1 truncate text-card-title">${title}</h1>`
           : html`<p className="flex-1 text-[18px] font-bold tracking-[-0.4px]">모먼트립</p>`}
         ${right}
       </div>
     </header>`;
+}
+
+// 안쪽 화면 틀: 위 헤더(← 뒤로 + 제목) + 내용. 탭바는 숨김 — 하던 일에 집중 (FLOWS 앱 틀)
+// bare면 내용 좌우 여백을 화면이 직접 정한다(가로로 꽉 차는 그리드·사진 줄)
+export function InnerLayout({ title, onBack, right, bare, className = '', children }) {
+  return html`
+    <div className="flex min-h-[100dvh] flex-col">
+      <${TopBar} title=${title} onBack=${onBack} right=${right} />
+      <div className=${'mx-auto flex w-full max-w-[430px] flex-1 flex-col ' + (bare ? '' : 'px-5 ') + className}>
+        ${children}
+      </div>
+    </div>`;
 }
 
 const TABS = [

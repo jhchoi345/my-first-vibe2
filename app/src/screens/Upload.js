@@ -5,7 +5,7 @@ import { html } from '../lib/html.js';
 import { go } from '../lib/router.js';
 import { getTrip, updateTrip, formatRange } from '../lib/trips.js';
 import { importPhoto, groupPhotos, usePhotoUrl, MAX_PHOTOS } from '../lib/photos.js';
-import { Screen, PrimaryButton, ErrorRow } from '../ui.js';
+import { Screen, InnerLayout, PrimaryButton, ErrorRow } from '../ui.js';
 
 function Thumb({ id }) {
   const url = usePhotoUrl(id);
@@ -69,10 +69,9 @@ export function UploadScreen({ tripId, files, clearFiles }) {
   if (!trip) return html`<${Screen} className="pt-8"><p className="text-body">여행을 찾지 못했어요.</p></${Screen}>`;
 
   return html`
-    <${Screen} className="pb-8 pt-6">
-      <h1 className="text-card-title">${trip.cities[0]} · ${formatRange(trip.start, trip.end)}</h1>
+    <${InnerLayout} title=${`${trip.cities[0]} · ${formatRange(trip.start, trip.end)}`} className="pb-8 pt-5">
 
-      <div className="mt-5 grid grid-cols-4 gap-1.5">
+      <div className="grid grid-cols-4 gap-1.5">
         ${done.slice(0, 24).map((id) => html`<${Thumb} key=${id} id=${id} />`)}
         ${!done.length && !failed && [0, 1, 2, 3].map((i) => html`<div key=${i} className="aspect-square animate-pulse rounded-[4px] bg-disabled"></div>`)}
       </div>
@@ -91,5 +90,5 @@ export function UploadScreen({ tripId, files, clearFiles }) {
             <p className="mt-2 text-right text-button">${progress}%</p>
             <p className="mt-3 text-center text-body text-muted">같은 곳에서 찍은 사진끼리 모으는 중이에요</p>
           </div>`}
-    </${Screen}>`;
+    </${InnerLayout}>`;
 }
