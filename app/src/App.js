@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { html } from './lib/html.js';
 import { usePath, go } from './lib/router.js';
 import { getAuth } from './lib/auth.js';
-import { createTrip, updateTrip } from './lib/trips.js';
+import { createTrip, getTrip, updateTrip } from './lib/trips.js';
 import { StartScreen } from './screens/Start.js';
 import { BoardScreen } from './screens/Board.js';
 import { TripNewScreen } from './screens/TripNew.js';
@@ -35,9 +35,20 @@ export function App() {
   }
 
   function onPicked(tripId) {
+    // 다시 고르기(F6 ③)였으면 여행 상세로, 처음 고르기(F1 ⑤)면 마그넷이 붙는 보드로
+    if (getTrip(tripId)?.status === 'done') {
+      go(`/trip/${tripId}`, { replace: true });
+      return;
+    }
     updateTrip(tripId, { status: 'done', doneAt: new Date().toISOString() });
     setJustAdded(tripId);
     go('/board', { replace: true });
+  }
+
+  // F6 ④ 사진 더 올리기: 기존 여행에 사진을 더해 다시 묶는다
+  function onMorePhotos(tripId, files) {
+    setPendingFiles(files);
+    go(`/trip/${tripId}/upload`, { replace: true });
   }
 
   if (!signedIn || path === '/') return html`<${StartScreen} />`;
@@ -45,7 +56,7 @@ export function App() {
 
   const m = path.match(/^\/trip\/([^/]+)(?:\/(upload|pick|edit))?$/);
   if (m && m[2] === 'upload') return html`<${UploadScreen} key=${m[1]} tripId=${m[1]} files=${pendingFiles} clearFiles=${() => setPendingFiles(null)} />`;
-  if (m && m[2] === 'pick') return html`<${PickScreen} key=${m[1]} tripId=${m[1]} onDone=${onPicked} />`;
+  if (m && m[2] === 'pick') return html`<${PickScreen} key=${m[1]} tripId=${m[1]} onDone=${onPicked} onMorePhotos=${onMorePhotos} />`;
   if (m && m[2] === 'edit') return html`<${TripEditScreen} key=${m[1]} tripId=${m[1]} />`;
   if (m) return html`<${TripDetailScreen} key=${m[1]} tripId=${m[1]} />`;
   return html`<${BoardScreen} justAdded=${justAdded} onSeen=${() => setJustAdded(null)} />`;

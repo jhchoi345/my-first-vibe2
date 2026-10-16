@@ -1,6 +1,7 @@
 // F1 ⑤ 베스트 고르기 — 미리 골라 두지 않음, 묶음마다 자유롭게, 전체 최소 1장 (D-024)
-import { useState } from 'react';
-import { ArrowLeft, Check, MapPin, Info } from '@phosphor-icons/react';
+// F6 ③ 다시 고르기도 이 화면: 고른 사진이 체크된 채 열리고, [사진 더 올리기]가 있다
+import { useRef, useState } from 'react';
+import { ArrowLeft, Check, MapPin, Info, Plus } from '@phosphor-icons/react';
 import { html } from '../lib/html.js';
 import { go } from '../lib/router.js';
 import { getTrip, updateTrip } from '../lib/trips.js';
@@ -20,10 +21,12 @@ function PickPhoto({ id, order, onToggle }) {
     </button>`;
 }
 
-export function PickScreen({ tripId, onDone }) {
+export function PickScreen({ tripId, onDone, onMorePhotos }) {
   const trip = getTrip(tripId);
   const [picked, setPicked] = useState(trip?.picked || []);
   const [skipped] = useState(trip?.skipped || 0);
+  const fileRef = useRef(null);
+  const editing = trip?.status === 'done'; // F6 ③ 다시 고르기
 
   if (!trip) return html`<${Screen} className="pt-8"><p className="text-body">여행을 찾지 못했어요.</p></${Screen}>`;
 
@@ -36,13 +39,21 @@ export function PickScreen({ tripId, onDone }) {
   return html`
     <div className="mx-auto flex min-h-[100dvh] w-full max-w-[430px] flex-col">
       <div className="px-5 pt-5">
-        <button type="button" aria-label="보드로 나가기" onClick=${() => go('/board')}
+        <button type="button" aria-label=${editing ? '여행 상세로 돌아가기' : '보드로 나가기'}
+          onClick=${() => go(editing ? `/trip/${tripId}` : '/board')}
           className="btn-soft -ml-2 flex h-10 w-10 items-center justify-center rounded-control">
           <${ArrowLeft} size=${22} />
         </button>
         <p className="mt-3 text-[18px] font-bold leading-[1.5] tracking-[-0.4px]">
           같은 곳에서 찍은 사진끼리 모아 뒀어요.<br />마음에 드는 사진을 골라 주세요.
         </p>
+        ${editing && html`
+          <button type="button" onClick=${() => { fileRef.current.value = ''; fileRef.current.click(); }}
+            className="btn-soft mt-3 flex h-10 items-center gap-1.5 rounded-control bg-primary-tint px-3 text-button text-primary-strong">
+            <${Plus} size=${16} weight="bold" /> 사진 더 올리기
+          </button>
+          <input ref=${fileRef} type="file" accept="image/*" multiple className="hidden" data-testid="more-photo-input"
+            onChange=${(e) => e.target.files.length && onMorePhotos(tripId, [...e.target.files])} />`}
         ${skipped > 0 && html`<div className="mt-3"><${NoticeRow} icon=${html`<${Info} size=${18} weight="bold" className="shrink-0" />`}>사진만 올렸어요</${NoticeRow}></div>`}
       </div>
 

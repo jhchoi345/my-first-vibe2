@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { ArrowLeft, DotsThree, MapPin, X } from '@phosphor-icons/react';
 import { html } from '../lib/html.js';
 import { go } from '../lib/router.js';
-import { getTrip, deleteTrip, formatRange } from '../lib/trips.js';
+import { getTrip, updateTrip, deleteTrip, formatRange } from '../lib/trips.js';
 import { usePhotoUrl, deletePhotos } from '../lib/photos.js';
 import { Screen, BottomSheet, PrimaryButton, SecondaryButton } from '../ui.js';
 
@@ -40,7 +40,7 @@ function GridPhoto({ id, onOpen }) {
   </button>`;
 }
 
-function Viewer({ id, place, onClose }) {
+function Viewer({ id, place, onClose, canRemove, onRemove }) {
   const url = usePhotoUrl(id);
   useEffect(() => {
     const onKey = (e) => e.key === 'Escape' && onClose();
@@ -57,9 +57,15 @@ function Viewer({ id, place, onClose }) {
       <div className="flex flex-1 items-center justify-center">
         ${url && html`<img src=${url} alt="" className="max-h-[75vh] w-full max-w-[430px] object-contain" />`}
       </div>
-      ${place && html`<p className="mx-auto flex w-full max-w-[430px] items-center gap-1 px-5 pb-10 text-body text-white">
-        <${MapPin} size=${16} weight="fill" /> ${place}
-      </p>`}
+      <div className="mx-auto flex w-full max-w-[430px] flex-col gap-3 px-5" style=${{ paddingBottom: 'calc(28px + env(safe-area-inset-bottom, 0px))' }}>
+        ${place && html`<p className="flex items-center gap-1 text-body text-white"><${MapPin} size=${16} weight="fill" /> ${place}</p>`}
+        ${canRemove
+          ? html`<${SecondaryButton} onClick=${onRemove}>베스트에서 빼기</${SecondaryButton}>`
+          : html`<div className="flex flex-col gap-2">
+              <button type="button" disabled className="h-10 w-full rounded-control bg-disabled text-button text-faint">베스트에서 빼기</button>
+              <p className="text-center text-meta text-faint">마그넷엔 사진이 한 장은 있어야 해요</p>
+            </div>`}
+      </div>
     </div>`;
 }
 
@@ -67,6 +73,7 @@ export function TripDetailScreen({ tripId }) {
   const trip = getTrip(tripId);
   const [open, setOpen] = useState(null);
   const [sheet, setSheet] = useState(null); // 'menu' | 'delete' (F6 ② · ⑥)
+  const [, setVersion] = useState(0); // 베스트에서 빼면 다시 그린다
   if (!trip) return html`<${Screen} className="pt-8"><p className="text-body">여행을 찾지 못했어요.</p></${Screen}>`;
 
   const byId = Object.fromEntries((trip.photos || []).map((p) => [p.id, p]));
@@ -92,7 +99,14 @@ export function TripDetailScreen({ tripId }) {
       <div className="mt-4 grid grid-cols-3 gap-0.5">
         ${trip.picked.map((id) => html`<${GridPhoto} key=${id} id=${id} onOpen=${() => setOpen(id)} />`)}
       </div>
-      ${open && html`<${Viewer} id=${open} place=${placeOf(open)} onClose=${() => setOpen(null)} />`}
+      ${open && html`<${Viewer} id=${open} place=${placeOf(open)} onClose=${() => setOpen(null)}
+        canRemove=${trip.picked.length > 1}
+        onRemove=${() => {
+          // F6 ①: 대표 사진을 빼면 다음으로 고른 사진이 대표가 된다 (picked[0])
+          updateTrip(tripId, { picked: trip.picked.filter((p) => p !== open) });
+          setOpen(null);
+          setVersion((v) => v + 1);
+        }} />`}
       ${sheet === 'menu' && html`
         <${BottomSheet} label="여행 고치기" onClose=${() => setSheet(null)}>
           ${[
