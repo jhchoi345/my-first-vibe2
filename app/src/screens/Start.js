@@ -6,13 +6,14 @@ import { signIn } from '../lib/auth.js';
 import { go } from '../lib/router.js';
 import { Screen, PrimaryButton, SecondaryButton, ErrorRow } from '../ui.js';
 
-// 보드 미리보기 그림 속 마그넷 (그림일 뿐, 사용자 데이터 아님)
+// 보드 미리보기 그림 속 마그넷 (예시일 뿐, 사용자 데이터 아님)
+// 사진: Unsplash 무료 라이선스 (https://unsplash.com/license), 긴 변 480px로 줄여 app/assets/start/에 둠
 const PREVIEW = [
-  { city: '오사카', x: '6%', y: '10%', r: -6, tone: 'bg-primary-tint' },
-  { city: '제주', x: '38%', y: '20%', r: 4, tone: 'bg-accent-tint' },
-  { city: '파리', x: '70%', y: '6%', r: -3, tone: 'bg-canvas' },
-  { city: '강릉', x: '20%', y: '54%', r: 5, tone: 'bg-canvas' },
-  { city: '방콕', x: '55%', y: '58%', r: -4, tone: 'bg-primary-tint' },
+  { city: '오사카', x: '6%', y: '10%', r: -6, img: 'assets/start/osaka.jpg' }, // Laura Barry — https://unsplash.com/photos/8ZnNLUr3RRc
+  { city: '제주', x: '38%', y: '20%', r: 4, img: 'assets/start/jeju.jpg' }, // WS Chae — https://unsplash.com/photos/-jVX4mW1Uac
+  { city: '파리', x: '70%', y: '6%', r: -3, img: 'assets/start/paris.jpg' }, // Anthony DELANOIX — https://unsplash.com/photos/QAwciFlS1g4
+  { city: '강릉', x: '20%', y: '54%', r: 5, img: 'assets/start/gangneung.jpg' }, // yoo 89 — https://unsplash.com/photos/4wbQ_Tyfoa4
+  { city: '방콕', x: '55%', y: '58%', r: -4, img: 'assets/start/bangkok.jpg' }, // Alejandro Cartagena — https://unsplash.com/photos/qeibBI7w4fQ
 ];
 
 function BoardPreview() {
@@ -21,7 +22,8 @@ function BoardPreview() {
       ${PREVIEW.map((m) => html`
         <div key=${m.city} className="absolute w-[27%] rounded-control bg-surface p-1 pb-1.5 text-center ring-1 ring-disabled"
           style=${{ left: m.x, top: m.y, transform: `rotate(${m.r}deg)` }}>
-          <div className=${'aspect-[4/3] w-full rounded-[6px] ' + m.tone}></div>
+          <img src=${m.img} alt="" className="aspect-[4/3] w-full rounded-[6px] bg-canvas object-cover" />
+
           <p className="mt-1 text-badge text-ink">${m.city}</p>
         </div>`)}
     </div>`;
