@@ -361,6 +361,13 @@
   .scr-f1-detail .map svg { position: absolute; inset: 0; width: 100%; height: 100%; }
   .scr-f1-detail .scr-grid { grid-template-columns: repeat(3, 1fr); gap: 3px; }
   .scr-f1-detail .scr-grid i { border-radius: 0; }
+  /* F6 아래 시트 (② 고치기 메뉴 · ⑥ 지우기 확인) */
+  .phone-screen.scr-sheet { padding: 0; }
+  .scr-sheet .dim { flex: 1; background: var(--ds-surface-alt); }
+  .scr-sheet .sheet { background: var(--ds-surface); border-radius: 18px 18px 0 0; padding: 20px 20px 28px; display: grid; gap: 4px; }
+  .scr-sheet .sheet p { font-size: 14px; font-weight: 700; padding: 10px 0; }
+  .scr-sheet .sheet p.q { font-weight: 700; font-size: 16px; line-height: 1.5; padding: 0 0 12px; }
+  .scr-sheet .sheet .ds-btn { align-self: stretch; text-align: center; margin-top: 4px; }
 </style>
 </head>
 <body>
@@ -380,6 +387,7 @@
           <li><a href="#map">플로우 지도</a></li>
           <li><a href="#screens">화면 목록</a></li>
           <li><a href="#f1">F1 첫 마그넷 붙이기</a></li>
+          <li><a href="#f6">F6 여행 고치기</a></li>
         </ul>
       </li>
     </ul>
@@ -389,7 +397,7 @@
     <header class="cover">
       <div class="eyebrow">Flows</div>
       <h1>모먼트립</h1>
-      <p class="lead">플로우 5개 중 1개를 그렸어요. "갤러리에 묻힌 그 여행 사진, 여기에 모아 볼까?"</p>
+      <p class="lead">플로우 6개 중 2개를 그렸어요. "갤러리에 묻힌 그 여행 사진, 여기에 모아 볼까?"</p>
       <div class="meta">
         <span class="tag">최종 수정 2026-10-16</span>
         <span class="tag">반응형 웹 · 모바일 우선</span>
@@ -406,8 +414,9 @@
           <div class="board-item"><span class="flow-id">F4</span><strong>추억 영상 만들고 보내기</strong><p>"이 여행, 영상으로 보고 싶다"</p></div>
           <div class="board-item"><span class="flow-id">F5</span><strong>추억 모아 보기</strong><p>"내가 어디어디 다녀왔더라?"</p></div>
         </div>
-        <div class="board-col"><h3>기획 완료 <span class="count">1</span></h3>
+        <div class="board-col"><h3>기획 완료 <span class="count">2</span></h3>
           <a class="board-item" href="#f1"><span class="flow-id">F1 · 첫 방문</span><strong>첫 마그넷 붙이기</strong><p>"갤러리에 묻힌 그 여행 사진, 여기에 모아 볼까?"</p></a>
+          <a class="board-item" href="#f6"><span class="flow-id">F6</span><strong>여행 고치기</strong><p>"앗, 사진 잘못 올렸네. 바꾸고 싶다"</p></a>
         </div>
         <div class="board-col"><h3>UI 구현 <span class="count">0</span></h3></div>
         <div class="board-col is-done"><h3>기능 구현 <span class="count">0</span></h3></div>
@@ -436,9 +445,12 @@
           <tr><th>시작</th><td>F1</td><td>무엇을 하는 곳인지 보고 로그인</td><td><a href="#f1">F1 ①</a></td></tr>
           <tr><th>마그넷 보드</th><td>F1, F2, F5</td><td>모은 여행을 마그넷으로 한눈에</td><td><a href="#f1">F1 ②, F1 ⑥</a></td></tr>
           <tr><th>여행 만들기</th><td>F1, F2</td><td>여행 하나를 보드에 붙이기</td><td><a href="#f1">F1 ③</a></td></tr>
-          <tr><th>사진 올리기</th><td>F1, F3</td><td>사진을 올리고 장소별로 묶기</td><td><a href="#f1">F1 ④</a></td></tr>
-          <tr><th>베스트 고르기</th><td>F1, F3</td><td>묶음마다 마음에 드는 사진 고르기</td><td><a href="#f1">F1 ⑤</a></td></tr>
+          <tr><th>사진 올리기</th><td>F1, F3, F6</td><td>사진을 올리고 장소별로 묶기</td><td><a href="#f1">F1 ④</a></td></tr>
+          <tr><th>베스트 고르기</th><td>F1, F3, F6</td><td>묶음마다 마음에 드는 사진 고르기</td><td><a href="#f1">F1 ⑤</a></td></tr>
           <tr><th>여행 상세</th><td>F1, F3, F4</td><td>베스트 그리드와 경로 지도 보기</td><td><a href="#f1">F1 ⑦</a></td></tr>
+          <tr><th>고치기 메뉴</th><td>F6</td><td>여행을 고치거나 지우는 길 고르기</td><td><a href="#f6">F6 ②</a></td></tr>
+          <tr><th>여행 정보 고치기</th><td>F6</td><td>도시·날짜 고치기</td><td><a href="#f6">F6 ⑤</a></td></tr>
+          <tr><th>지우기 확인</th><td>F6</td><td>지울지 한 번 더 묻기</td><td><a href="#f6">F6 ⑥</a></td></tr>
         </tbody>
       </table></div>
     </section>
@@ -610,6 +622,105 @@
 
       <div class="sub">변경 기록</div>
       <ul class="refs"><li>2026-10-16 기획 완료</li></ul>
+    </section>
+
+    <section class="section" id="f6">
+      <div class="section-label">F6 · 기획 완료</div>
+      <h2>여행 고치기</h2>
+      <div class="callout">
+        <p class="big">고친 사진·정보가 여행 상세와 마그넷에 바로 보이거나, 지운 여행이 보드에서 사라짐</p>
+        <dl class="kv">
+          <dt>진입 동기</dt><dd>여행 상세를 보다가 잘못 고른 사진, 빠뜨린 사진, 틀린 도시·날짜가 눈에 띔. 또는 테스트로 만든 여행을 치우고 싶음</dd>
+          <dt>상태 변화</dt><dd>마음에 안 드는 여행 → 내 마음에 맞는 여행</dd>
+        </dl>
+      </div>
+
+      <div class="sub">화면</div>
+      <div class="phones" style="--ds-font:Pretendard, -apple-system, BlinkMacSystemFont, system-ui, 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif; --ds-bg:#f4f4f5; --ds-surface:#ffffff; --ds-border:#e4e4e7; --ds-surface-alt:#e4e4e7; --ds-text:#18181b; --ds-muted:#8e8e95; --ds-primary:#8a4fd8; --ds-on-primary:#ffffff; --ds-primary-soft:#f3edfc; --ds-primary-strong:#6a3fb8; --ds-radius:12px; --ds-btn-radius:8px; --ds-shadow:none">
+        <div class="phone">
+          <div class="phone-step">①<strong>여행 상세</strong></div>
+          <div class="phone-screen scr-f1-detail">
+            <p class="scr-head" style="display:flex;justify-content:space-between">← 오사카 · 2026.9.12–15 <span>⋯</span></p>
+            <div class="map">
+              <svg viewBox="0 0 260 120" preserveAspectRatio="none"><polyline points="30,90 90,50 150,70 220,30" fill="none" stroke="#8a4fd8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="30" cy="90" r="6" fill="#8a4fd8"/><circle cx="90" cy="50" r="6" fill="#8a4fd8"/><circle cx="150" cy="70" r="6" fill="#8a4fd8"/><circle cx="220" cy="30" r="6" fill="#8a4fd8"/></svg>
+            </div>
+            <div class="scr-grid"><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <p class="phone-note">오른쪽 위 ⋯ 탭 → ② / 사진 탭 → 크게 보기에서 [베스트에서 빼기]</p>
+        </div>
+        <div class="phone">
+          <div class="phone-step">②<strong>고치기 메뉴</strong></div>
+          <div class="phone-screen scr-sheet">
+            <div class="dim"></div>
+            <div class="sheet">
+              <p>사진 다시 고르기</p><p>여행 정보 고치기</p><p>여행 지우기</p>
+              <span class="ds-btn is-secondary">닫기</span>
+            </div>
+          </div>
+          <p class="phone-note">사진 다시 고르기 → ③ / 여행 정보 고치기 → ⑤ / 여행 지우기 → ⑥</p>
+        </div>
+        <div class="phone">
+          <div class="phone-step">⑥<strong>지우기 확인</strong></div>
+          <div class="phone-screen scr-sheet">
+            <div class="dim"></div>
+            <div class="sheet">
+              <p class="q">이 여행을 지울까요?<br>고른 사진도 함께 사라져요.</p>
+              <span class="ds-btn">지우기</span>
+              <span class="ds-btn is-secondary">그대로 두기</span>
+            </div>
+          </div>
+          <p class="phone-note">[지우기] → 보드 / [그대로 두기] → ①</p>
+        </div>
+      </div>
+      <p class="source">③ 베스트 고르기 · ④ 사진 올리기 · ⑤ 여행 정보 고치기는 F1 ⑤ · ④ · ③ 화면을 그대로 쓰고, 달라지는 점만 아래 단계 표에 적었어요.</p>
+
+      <div class="sub">단계</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>단계</th><th>화면</th><th>기능</th><th>주 행동</th><th>핵심 결정</th></tr></thead>
+        <tbody>
+          <tr><th>①</th><td>여행 상세</td><td>사진 그리드(여행별)</td><td>오른쪽 위 ⋯ 탭 → ② / 사진 탭 → 크게 보기에서 [베스트에서 빼기]</td><td>고치는 길은 ⋯ 하나로 모음. 사진 한 장 빼기만 크게 보기에서 바로</td></tr>
+          <tr><th>②</th><td>고치기 메뉴</td><td>—</td><td>사진 다시 고르기 → ③ / 여행 정보 고치기 → ⑤ / 여행 지우기 → ⑥</td><td>아래에서 올라오는 메뉴. 세 개만</td></tr>
+          <tr><th>③</th><td>베스트 고르기</td><td>베스트 사진 고르기(다시 고르기)</td><td>사진을 빼고 더하고 [다 골랐어요] → ① / [사진 더 올리기] → ④</td><td>고른 사진이 체크된 채로 열림</td></tr>
+          <tr><th>④</th><td>사진 올리기</td><td>베스트 사진 고르기</td><td>사진 선택 → 묶음에 더해짐 → ③</td><td>새 사진은 기존 사진과 함께 다시 장소별로 묶음. 고른 건 그대로</td></tr>
+          <tr><th>⑤</th><td>여행 정보 고치기</td><td>—</td><td>도시·날짜 고치고 [저장하기] → ①</td><td>여행 만들기 화면을 그대로 쓰되 지금 값이 채워진 채로</td></tr>
+          <tr><th>⑥</th><td>지우기 확인</td><td>마그넷 보드</td><td>[지우기] → 보드 / [그대로 두기] → ①</td><td>되돌릴 수 없어서 화면 안에서 한 번 더 물음</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="sub">화면 상태</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>화면</th><th>빈</th><th>로딩</th><th>오류</th></tr></thead>
+        <tbody>
+          <tr><th>① 여행 상세</th><td>남은 베스트가 한 장 — [베스트에서 빼기]가 흐리고 "마그넷엔 사진이 한 장은 있어야 해요" (임시)</td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="sub">예외</div>
+      <div class="table-wrap"><table>
+        <thead><tr><th>단계</th><th>상황</th><th>어떻게 동작하나</th></tr></thead>
+        <tbody>
+          <tr><th>①</th><td>남은 베스트가 한 장인데 빼려 함</td><td>버튼이 흐리고 안내 문구</td></tr>
+          <tr><th>③</th><td>다시 고르다 나감</td><td>지금까지 바꾼 선택은 남음(F1과 같음)</td></tr>
+          <tr><th>③</th><td>대표 사진을 뺌</td><td>다음으로 고른 사진이 마그넷 대표가 됨</td></tr>
+          <tr><th>④</th><td>사진 선택을 취소</td><td>③ 그대로</td></tr>
+          <tr><th>⑤</th><td>도시를 비우거나 앞으로의 날짜를 넣음</td><td>F1 ③과 같은 안내</td></tr>
+          <tr><th>⑥</th><td>마지막 여행을 지움</td><td>빈 보드(F1 ②)로</td></tr>
+        </tbody>
+      </table></div>
+
+      <div class="sub">첫 버전 범위</div>
+      <div class="compare">
+        <div class="compare-col is-do"><h3>첫 버전에 넣음</h3><ul>
+          <li>⋯ 고치기 메뉴</li><li>사진 다시 고르기</li><li>사진 더 올리기</li><li>크게 보기에서 베스트에서 빼기</li><li>여행 정보 고치기</li><li>여행 지우기(확인 한 번)</li>
+        </ul></div>
+        <div class="compare-col"><h3>나중에</h3><ul>
+          <li>대표 사진 직접 고르기</li><li>사진 순서 바꾸기</li><li>올린 사진 자체를 지우기(지금은 고르지 않으면 그리드에 안 보임)</li>
+        </ul></div>
+      </div>
+      <p class="source">기본값으로 둔 것: 지운 여행은 되돌리기 없음 · 여행을 지우면 그 여행의 사진도 브라우저 저장 공간에서 지움 · 지우기 버튼은 주요 버튼 색(오류 색은 시스템 오류에만, DESIGN)</p>
+
+      <div class="sub">변경 기록</div>
+      <ul class="refs"><li>2026-10-16 기획 완료 (F1을 휴대폰에서 써 보고 "잘못 올린 사진을 바꿀 수 없다"는 데서 나옴)</li></ul>
     </section>
 
     <footer class="footer">Vibe Studio · 원본: docs/FLOWS.md</footer>
