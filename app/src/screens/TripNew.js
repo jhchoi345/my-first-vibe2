@@ -1,4 +1,5 @@
 // F1 ③ 여행 만들기 — 첫 방문엔 지난 여행만, 도시·날짜만 받는다 (D-023)
+// F6 ⑤ 여행 정보 고치기도 이 화면을 쓴다: onSave가 있으면 사진 선택 대신 [저장하기]
 import { useRef, useState } from 'react';
 import { ArrowLeft, Plus, X, Info } from '@phosphor-icons/react';
 import { html } from '../lib/html.js';
@@ -8,7 +9,7 @@ import { Screen, PrimaryButton, NoticeRow } from '../ui.js';
 
 const fieldClass = 'h-10 w-full rounded-control border border-select-border bg-surface px-3 text-body text-ink placeholder:text-faint';
 
-export function TripNewScreen({ draft, setDraft, onPhotos }) {
+export function TripNewScreen({ draft, setDraft, onPhotos, onSave, title = '지난 여행 붙이기', backTo = '/board' }) {
   const [error, setError] = useState(null);
   const fileRef = useRef(null);
   const { cities, start, end } = draft;
@@ -33,6 +34,14 @@ export function TripNewScreen({ draft, setDraft, onPhotos }) {
     fileRef.current.click(); // 브라우저 사진 선택창 (기본 장치: 별도 권한 없음)
   }
 
+  function save() {
+    const problem = check();
+    setError(problem);
+    if (problem) return;
+    const [from, to] = start <= end ? [start, end] : [end, start];
+    onSave({ cities: cities.map((c) => c.trim()).filter(Boolean), start: from, end: to });
+  }
+
   function onPicked(e) {
     const files = [...e.target.files];
     if (!files.length) return; // 선택을 취소하면 이 화면 그대로, 입력도 그대로
@@ -49,11 +58,11 @@ export function TripNewScreen({ draft, setDraft, onPhotos }) {
   return html`
     <${Screen} className="pb-8 pt-5">
       <header className="flex items-center gap-2">
-        <button type="button" aria-label="보드로 돌아가기" onClick=${() => go('/board')}
+        <button type="button" aria-label="돌아가기" onClick=${() => go(backTo)}
           className="btn-soft -ml-2 flex h-10 w-10 items-center justify-center rounded-control">
           <${ArrowLeft} size=${22} />
         </button>
-        <h1 className="text-card-title">지난 여행 붙이기</h1>
+        <h1 className="text-card-title">${title}</h1>
       </header>
 
       <div className="mt-6 flex flex-col gap-2">
@@ -87,7 +96,9 @@ export function TripNewScreen({ draft, setDraft, onPhotos }) {
 
       <div className="mt-auto flex flex-col gap-3 pt-10">
         ${message && html`<${NoticeRow} icon=${html`<${Info} size=${18} weight="bold" className="shrink-0" />`}>${message}</${NoticeRow}>`}
-        <${PrimaryButton} onClick=${openPicker}>사진 올리기</${PrimaryButton}>
+        ${onSave
+          ? html`<${PrimaryButton} onClick=${save}>저장하기</${PrimaryButton}>`
+          : html`<${PrimaryButton} onClick=${openPicker}>사진 올리기</${PrimaryButton}>`}
       </div>
       <input ref=${fileRef} type="file" accept="image/*" multiple className="hidden" onChange=${onPicked} data-testid="photo-input" />
     </${Screen}>`;

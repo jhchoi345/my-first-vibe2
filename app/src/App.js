@@ -9,6 +9,7 @@ import { TripNewScreen } from './screens/TripNew.js';
 import { UploadScreen } from './screens/Upload.js';
 import { PickScreen } from './screens/Pick.js';
 import { TripDetailScreen } from './screens/TripDetail.js';
+import { TripEditScreen } from './screens/TripEdit.js';
 
 const EMPTY_DRAFT = { cities: [''], start: '', end: '' };
 
@@ -42,9 +43,10 @@ export function App() {
   if (!signedIn || path === '/') return html`<${StartScreen} />`;
   if (path === '/trip/new') return html`<${TripNewScreen} draft=${draft} setDraft=${setDraft} onPhotos=${onPhotos} />`;
 
-  const m = path.match(/^\/trip\/([^/]+)(?:\/(upload|pick))?$/);
+  const m = path.match(/^\/trip\/([^/]+)(?:\/(upload|pick|edit))?$/);
   if (m && m[2] === 'upload') return html`<${UploadScreen} key=${m[1]} tripId=${m[1]} files=${pendingFiles} clearFiles=${() => setPendingFiles(null)} />`;
   if (m && m[2] === 'pick') return html`<${PickScreen} key=${m[1]} tripId=${m[1]} onDone=${onPicked} />`;
+  if (m && m[2] === 'edit') return html`<${TripEditScreen} key=${m[1]} tripId=${m[1]} />`;
   if (m) return html`<${TripDetailScreen} key=${m[1]} tripId=${m[1]} />`;
   return html`<${BoardScreen} justAdded=${justAdded} onSeen=${() => setJustAdded(null)} />`;
 }
