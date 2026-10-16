@@ -1,6 +1,7 @@
 // F1 ② 마그넷 보드 (빈 보드)
 import { Plus } from '@phosphor-icons/react';
 import { html } from '../lib/html.js';
+import { go } from '../lib/router.js';
 import { Screen, PrimaryButton } from '../ui.js';
 
 export function BoardScreen() {
@@ -17,6 +18,6 @@ export function BoardScreen() {
         </p>
       </div>
 
-      <${PrimaryButton} onClick=${() => {}}>여행 붙이기</${PrimaryButton}>
+      <${PrimaryButton} onClick=${() => go('/trip/new')}>여행 붙이기</${PrimaryButton}>
     </${Screen}>`;
 }

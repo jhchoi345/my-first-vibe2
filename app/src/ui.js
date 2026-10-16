@@ -31,6 +31,11 @@ export function Spinner({ dark }) {
     (dark ? 'border-disabled border-t-ink' : 'border-white/40 border-t-white')}></span>`;
 }
 
+// notice-row: 입력 안내처럼 시스템 오류가 아닌 알림 (DESIGN components)
+export function NoticeRow({ children, icon }) {
+  return html`<div role="alert" className="flex min-h-[56px] items-center gap-2 rounded-notice bg-[#f1f3f5] px-4 py-3 text-body text-[#4b525a]">${icon}${children}</div>`;
+}
+
 // 시스템 오류 줄: error 색 + 아이콘 + 문구, 이모지 없음 (DESIGN Do's)
 export function ErrorRow({ children, icon }) {
   return html`<div role="alert" className="flex items-center gap-2 rounded-notice bg-error-tint px-4 py-3 text-body text-error">${icon}${children}</div>`;
