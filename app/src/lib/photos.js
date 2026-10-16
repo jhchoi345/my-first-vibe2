@@ -1,7 +1,7 @@
 // 사진 — 사진 속 위치·찍은 시간은 진짜로 읽고, 줄인 사진을 브라우저 저장 공간(IndexedDB)에 둔다 (SETUP)
 import { useEffect, useState } from 'react';
 import exifr from 'exifr';
-import { get, set } from 'idb-keyval';
+import { get, set, delMany } from 'idb-keyval';
 import { distance, nearestPlaceName } from './places.js';
 
 export const MAX_PHOTOS = 200;
@@ -49,6 +49,12 @@ export async function importPhoto(file) {
 
 export async function getPhoto(id) {
   return get('photo:' + id);
+}
+
+// 여행을 지울 때 그 여행의 사진도 브라우저 저장 공간에서 지운다 (F6 기본값)
+export async function deletePhotos(ids) {
+  ids.forEach((id) => { const u = urlCache.get(id); if (u) { URL.revokeObjectURL(u); urlCache.delete(id); } });
+  await delMany(ids.map((id) => 'photo:' + id));
 }
 
 const urlCache = new Map();

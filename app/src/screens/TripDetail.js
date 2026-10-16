@@ -1,11 +1,11 @@
 // F1 ⑦ 여행 상세 — 위에 작은 경로 지도, 아래 고른 베스트만 3열 그리드 (목표 순간)
 import { useEffect, useState } from 'react';
-import { ArrowLeft, MapPin, X } from '@phosphor-icons/react';
+import { ArrowLeft, DotsThree, MapPin, X } from '@phosphor-icons/react';
 import { html } from '../lib/html.js';
 import { go } from '../lib/router.js';
-import { getTrip, formatRange } from '../lib/trips.js';
-import { usePhotoUrl } from '../lib/photos.js';
-import { Screen } from '../ui.js';
+import { getTrip, deleteTrip, formatRange } from '../lib/trips.js';
+import { usePhotoUrl, deletePhotos } from '../lib/photos.js';
+import { Screen, BottomSheet, PrimaryButton, SecondaryButton } from '../ui.js';
 
 // 흉내: 지도 — 지도 모양 그림 위에 사진 위치를 점과 선으로 (SETUP)
 function RouteMap({ points }) {
@@ -66,6 +66,7 @@ function Viewer({ id, place, onClose }) {
 export function TripDetailScreen({ tripId }) {
   const trip = getTrip(tripId);
   const [open, setOpen] = useState(null);
+  const [sheet, setSheet] = useState(null); // 'menu' | 'delete' (F6 ② · ⑥)
   if (!trip) return html`<${Screen} className="pt-8"><p className="text-body">여행을 찾지 못했어요.</p></${Screen}>`;
 
   const byId = Object.fromEntries((trip.photos || []).map((p) => [p.id, p]));
@@ -81,12 +82,39 @@ export function TripDetailScreen({ tripId }) {
           className="btn-soft -ml-2 flex h-10 w-10 items-center justify-center rounded-control">
           <${ArrowLeft} size=${22} />
         </button>
-        <h1 className="text-card-title">${trip.cities[0]} · ${formatRange(trip.start, trip.end)}</h1>
+        <h1 className="min-w-0 flex-1 text-card-title">${trip.cities[0]} · ${formatRange(trip.start, trip.end)}</h1>
+        <button type="button" aria-label="여행 고치기" onClick=${() => setSheet('menu')}
+          className="btn-soft -mr-2 flex h-10 w-10 items-center justify-center rounded-control">
+          <${DotsThree} size=${24} weight="bold" />
+        </button>
       </header>
       <div className="mt-4 px-5"><${RouteMap} points=${points} /></div>
       <div className="mt-4 grid grid-cols-3 gap-0.5">
         ${trip.picked.map((id) => html`<${GridPhoto} key=${id} id=${id} onOpen=${() => setOpen(id)} />`)}
       </div>
       ${open && html`<${Viewer} id=${open} place=${placeOf(open)} onClose=${() => setOpen(null)} />`}
+      ${sheet === 'menu' && html`
+        <${BottomSheet} label="여행 고치기" onClose=${() => setSheet(null)}>
+          ${[
+            ['사진 다시 고르기', () => go(`/trip/${tripId}/pick`)],
+            ['여행 정보 고치기', () => go(`/trip/${tripId}/edit`)],
+            ['여행 지우기', () => setSheet('delete')],
+          ].map(([label, onClick]) => html`
+            <button key=${label} type="button" onClick=${onClick}
+              className="btn-soft flex h-12 w-full items-center rounded-control px-1 text-left text-card-title">${label}</button>`)}
+          <div className="mt-3"><${SecondaryButton} onClick=${() => setSheet(null)}>닫기</${SecondaryButton}></div>
+        </${BottomSheet}>`}
+      ${sheet === 'delete' && html`
+        <${BottomSheet} label="여행 지우기" onClose=${() => setSheet(null)}>
+          <p className="pb-5 pt-2 text-[18px] font-bold leading-[1.5] tracking-[-0.4px]">이 여행을 지울까요?<br />고른 사진도 함께 사라져요.</p>
+          <div className="flex flex-col gap-2">
+            <${PrimaryButton} onClick=${async () => {
+              const removed = deleteTrip(tripId);
+              go('/board', { replace: true });
+              await deletePhotos((removed?.photos || []).map((p) => p.id));
+            }}>지우기</${PrimaryButton}>
+            <${SecondaryButton} onClick=${() => setSheet(null)}>그대로 두기</${SecondaryButton}>
+          </div>
+        </${BottomSheet}>`}
     </div>`;
 }

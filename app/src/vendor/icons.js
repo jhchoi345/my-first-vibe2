@@ -1,6 +1,7 @@
 // Phosphor 아이콘 (DESIGN runtime_deps) — 쓰는 아이콘만 하나씩 불러온다
 
 export { ArrowLeft } from 'https://cdn.jsdelivr.net/npm/@phosphor-icons/react@2.1.7/dist/csr/ArrowLeft.mjs';
+export { DotsThree } from 'https://cdn.jsdelivr.net/npm/@phosphor-icons/react@2.1.7/dist/csr/DotsThree.mjs';
 export { Check } from 'https://cdn.jsdelivr.net/npm/@phosphor-icons/react@2.1.7/dist/csr/Check.mjs';
 export { Info } from 'https://cdn.jsdelivr.net/npm/@phosphor-icons/react@2.1.7/dist/csr/Info.mjs';
 export { MapPin } from 'https://cdn.jsdelivr.net/npm/@phosphor-icons/react@2.1.7/dist/csr/MapPin.mjs';

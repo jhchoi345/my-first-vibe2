@@ -39,6 +39,12 @@ export function updateTrip(id, patch) {
   return trips.find((t) => t.id === id);
 }
 
+export function deleteTrip(id) {
+  const trip = getTrip(id);
+  saveAll(listTrips().filter((t) => t.id !== id));
+  return trip;
+}
+
 export function today() {
   const d = new Date();
   return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10);
