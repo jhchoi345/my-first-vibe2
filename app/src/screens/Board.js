@@ -1,37 +1,10 @@
-// F1 ② 마그넷 보드 (빈 보드) · ⑥ 마그넷이 붙은 보드
-import { useState } from 'react';
-import { Plus, UserCircle } from '@phosphor-icons/react';
+// F1 ② 마그넷 보드 (빈 보드) · ⑥ 마그넷이 붙은 보드 — 앱 틀의 "보드" 탭
+import { Plus } from '@phosphor-icons/react';
 import { html } from '../lib/html.js';
 import { go } from '../lib/router.js';
-import { getAuth, signOut } from '../lib/auth.js';
 import { listTrips } from '../lib/trips.js';
 import { Magnet } from '../Magnet.js';
-import { Screen, PrimaryButton, SecondaryButton, BottomSheet } from '../ui.js';
-
-const PROVIDER = { kakao: '카카오', google: '구글' };
-
-// 보드 제목 줄 + 내 계정(로그아웃). 기본 장치의 "설정 화면 하나"를 아래 시트로 둠
-function BoardHeader() {
-  const [open, setOpen] = useState(false);
-  const provider = PROVIDER[getAuth()?.provider] || '간편';
-  return html`
-    <header className="flex items-center justify-between">
-      <h1 className="text-section">내 마그넷 보드</h1>
-      <button type="button" aria-label="내 계정" onClick=${() => setOpen(true)}
-        className="btn-soft -mr-2 flex h-10 w-10 items-center justify-center rounded-control text-ink">
-        <${UserCircle} size=${26} />
-      </button>
-    </header>
-    ${open && html`
-      <${BottomSheet} label="내 계정" onClose=${() => setOpen(false)}>
-        <p className="pb-1 pt-2 text-card-title">${provider}로 로그인했어요</p>
-        <p className="pb-5 text-body text-muted">로그아웃해도 이 기기에 모은 마그넷은 그대로 있어요.</p>
-        <div className="flex flex-col gap-2">
-          <${PrimaryButton} onClick=${() => { signOut(); go('/', { replace: true }); }}>로그아웃</${PrimaryButton}>
-          <${SecondaryButton} onClick=${() => setOpen(false)}>닫기</${SecondaryButton}>
-        </div>
-      </${BottomSheet}>`}`;
-}
+import { TabLayout, PrimaryButton } from '../ui.js';
 
 function AddSlot() {
   return html`
@@ -46,8 +19,8 @@ export function BoardScreen({ justAdded, onSeen }) {
 
   if (!trips.length) {
     return html`
-      <${Screen} className="pb-8 pt-8">
-        <${BoardHeader} />
+      <${TabLayout} current="/board">
+        <h1 className="text-section">내 마그넷 보드</h1>
         <div className="flex flex-1 flex-col items-center justify-center gap-6 py-10">
           <div aria-hidden="true" className="flex h-[150px] w-[124px] items-center justify-center rounded-card border-2 border-dashed border-faint text-faint">
             <${Plus} size=${32} />
@@ -57,7 +30,7 @@ export function BoardScreen({ justAdded, onSeen }) {
           </p>
         </div>
         <${PrimaryButton} onClick=${() => go('/trip/new')}>여행 붙이기</${PrimaryButton}>
-      </${Screen}>`;
+      </${TabLayout}>`;
   }
 
   // 고르는 중인 여행은 누르면 이어서 고르기, 다 고른 여행은 여행 상세로
@@ -67,8 +40,8 @@ export function BoardScreen({ justAdded, onSeen }) {
   const celebrate = justAdded && trips.some((t) => t.id === justAdded);
 
   return html`
-    <${Screen} className="pb-8 pt-8">
-      <${BoardHeader} />
+    <${TabLayout} current="/board">
+      <h1 className="text-section">내 마그넷 보드</h1>
       <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-6">
         ${trips.map((t, i) => html`<${Magnet} key=${t.id} trip=${t} index=${i} isNew=${t.id === justAdded}
           onClick=${() => { onSeen(); open(t); }} />`)}
@@ -77,5 +50,5 @@ export function BoardScreen({ justAdded, onSeen }) {
       ${celebrate && html`<p role="status" className="mt-8 text-center text-card-title">
         ${doneCount === 1 ? '완성! 첫 마그넷이 붙었어요' : '완성! 마그넷이 붙었어요'}
       </p>`}
-    </${Screen}>`;
+    </${TabLayout}>`;
 }

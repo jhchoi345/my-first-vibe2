@@ -10,6 +10,8 @@ import { UploadScreen } from './screens/Upload.js';
 import { PickScreen } from './screens/Pick.js';
 import { TripDetailScreen } from './screens/TripDetail.js';
 import { TripEditScreen } from './screens/TripEdit.js';
+import { AccountScreen } from './screens/Account.js';
+import { SoonScreen } from './screens/Soon.js';
 
 const EMPTY_DRAFT = { cities: [''], start: '', end: '' };
 
@@ -59,5 +61,7 @@ export function App() {
   if (m && m[2] === 'pick') return html`<${PickScreen} key=${m[1]} tripId=${m[1]} onDone=${onPicked} onMorePhotos=${onMorePhotos} />`;
   if (m && m[2] === 'edit') return html`<${TripEditScreen} key=${m[1]} tripId=${m[1]} />`;
   if (m) return html`<${TripDetailScreen} key=${m[1]} tripId=${m[1]} />`;
+  if (path === '/map' || path === '/photos') return html`<${SoonScreen} key=${path} path=${path} />`;
+  if (path === '/account') return html`<${AccountScreen} />`;
   return html`<${BoardScreen} justAdded=${justAdded} onSeen=${() => setJustAdded(null)} />`;
 }
