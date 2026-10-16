@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>모먼트립 — Voice</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+  :root {
+    --bg: #ffffff;
+    --surface: #f7f7f8;
+    --line: #e7e7ea;
+    --ink: #17171a;
+    --ink-2: #4b4b55;
+    --ink-3: #8a8a96;
+    --accent: #2f6bff;
+    --accent-soft: #eef3ff;
+    --good: #12805c;
+    --good-soft: #e9f6f0;
+    --bad: #c8372d;
+    --bad-soft: #fcefee;
+    --radius: 12px;
+    --sidebar: 248px;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; scroll-padding-top: 32px; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
+    font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased;
+    word-break: keep-all;
+  }
+  a { color: inherit; }
+
+  /* ---------- layout ---------- */
+  .layout { display: grid; grid-template-columns: var(--sidebar) minmax(0, 1fr); min-height: 100vh; }
+  main { min-width: 0; }
+  .sidebar {
+    position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    border-right: 1px solid var(--line); padding: 28px 20px;
+  }
+  main { max-width: 820px; width: 100%; padding: 56px 56px 96px; }
+  main.is-wide { max-width: 1480px; }
+  main.is-wide .cover, main.is-wide .section > p, main.is-wide .callout { max-width: 820px; }
+
+  /* ---------- sidebar ---------- */
+  .brand { font-weight: 700; font-size: 16px; letter-spacing: -0.01em; }
+  .brand small { display: block; font-weight: 500; font-size: 12px; color: var(--ink-3); letter-spacing: 0; }
+  .nav { list-style: none; margin: 28px 0 0; padding: 0; }
+  .nav-group { font-size: 11px; font-weight: 600; color: var(--ink-3); letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 8px; }
+  .nav a {
+    display: flex; align-items: center; gap: 8px; text-decoration: none;
+    padding: 6px 10px; border-radius: 8px; color: var(--ink-2); font-size: 14px;
+  }
+  .nav a:hover { background: var(--surface); }
+  .nav .step { font-size: 11px; color: var(--ink-3); width: 14px; font-variant-numeric: tabular-nums; }
+  .nav .is-current > a { background: var(--surface); color: var(--ink); font-weight: 600; }
+  .nav .is-pending > a { color: var(--ink-3); pointer-events: none; }
+  .nav .is-pending > a::after { content: "준비 중"; margin-left: auto; font-size: 11px; }
+  .toc { list-style: none; margin: 4px 0 8px 22px; padding: 0 0 0 10px; border-left: 1px solid var(--line); }
+  .toc a { padding: 4px 10px; font-size: 13px; color: var(--ink-3); }
+  .toc a.is-active { color: var(--accent); font-weight: 600; background: none; }
+
+  /* ---------- cover ---------- */
+  .cover { padding-bottom: 40px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+  .eyebrow { font-size: 12px; font-weight: 600; color: var(--accent); letter-spacing: 0.08em; text-transform: uppercase; }
+  .cover h1 { font-size: 40px; line-height: 1.2; letter-spacing: -0.03em; margin: 10px 0 14px; }
+  .lead { font-size: 20px; line-height: 1.55; color: var(--ink-2); margin: 0; letter-spacing: -0.01em; }
+  .meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+  .tag { font-size: 12px; color: var(--ink-2); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; }
+
+  /* ---------- section ---------- */
+  .section { padding-top: 48px; }
+  .section-label { font-size: 12px; font-weight: 600; color: var(--ink-3); letter-spacing: 0.06em; text-transform: uppercase; }
+  .section h2 { font-size: 22px; letter-spacing: -0.02em; margin: 4px 0 16px; }
+  .section p { margin: 0 0 12px; color: var(--ink-2); }
+
+  /* ---------- flow ---------- */
+  .flow { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 28px; }
+  .flow-step { position: relative; background: var(--surface); border-radius: var(--radius); padding: 18px; }
+  .flow-step:not(:last-child)::after {
+    content: "→"; position: absolute; right: -21px; top: 50%; transform: translateY(-50%);
+    color: var(--ink-3); font-size: 16px;
+  }
+  .flow-step h3 { font-size: 13px; color: var(--ink-3); font-weight: 600; margin: 0 0 6px; }
+  .flow-step p { margin: 0; color: var(--ink); font-size: 14px; }
+
+  /* ---------- cards ---------- */
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .grid > .card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  .card { border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+  .card h3 { font-size: 15px; margin: 0 0 4px; letter-spacing: -0.01em; }
+  .card p { margin: 0; font-size: 14px; color: var(--ink-2); }
+  .card .num { font-size: 12px; color: var(--accent); font-weight: 600; font-variant-numeric: tabular-nums; }
+  .card.is-muted { border-style: dashed; background: none; }
+  .card.is-muted h3, .card.is-muted p { color: var(--ink-3); }
+  .sub { font-size: 13px; font-weight: 600; color: var(--ink-3); margin: 24px 0 10px; }
+
+  /* ---------- callout ---------- */
+  .callout { background: var(--accent-soft); border-radius: var(--radius); padding: 22px 24px; }
+  .callout .big { font-size: 18px; font-weight: 600; letter-spacing: -0.01em; margin: 0 0 12px; color: var(--ink); }
+  .callout.is-empty { background: none; border: 1px dashed var(--line); color: var(--ink-3); text-align: center; padding: 28px; }
+  .callout.is-empty p { color: var(--ink-3); margin: 0; }
+  .source { font-size: 12px; color: var(--ink-3); margin-top: 12px; }
+
+  /* ---------- key-value ---------- */
+  .kv { display: grid; grid-template-columns: 120px 1fr; gap: 10px 16px; margin: 0; }
+  .kv dt { color: var(--ink-3); font-size: 13px; padding-top: 1px; }
+  .kv dd { margin: 0; color: var(--ink); }
+
+  .card .kv { grid-template-columns: 1fr; gap: 2px; margin-top: 10px; }
+  .card .kv dd { margin-bottom: 8px; font-size: 14px; color: var(--ink-2); }
+
+  /* ---------- table ---------- */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); }
+  .table-wrap table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .table-wrap th, .table-wrap td { text-align: left; vertical-align: top; padding: 10px 14px; border-bottom: 1px solid var(--line); }
+  .table-wrap thead th { background: var(--surface); color: var(--ink-2); font-size: 13px; font-weight: 600; white-space: nowrap; }
+  .table-wrap tbody th { font-weight: 600; color: var(--ink); white-space: nowrap; }
+  .table-wrap td { color: var(--ink-2); }
+  .table-wrap tr:last-child > * { border-bottom: 0; }
+  .table-wrap a { color: var(--accent); text-decoration: none; }
+  .table-wrap code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; background: var(--surface); padding: 1px 5px; border-radius: 4px; }
+  .table-wrap + .sub { margin-top: 28px; }
+  .table-wrap + p { margin-top: 12px; }
+
+  /* ---------- shots ---------- */
+  .shots { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .shots.is-mobile { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .shot { margin: 0; border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: var(--bg); }
+  .shot img { display: block; width: 100%; height: auto; background: var(--surface); border-bottom: 1px solid var(--line); }
+  .shot figcaption { padding: 14px 16px; }
+  .shot figcaption strong { display: block; font-size: 14px; }
+  .shot figcaption p { margin: 4px 0 0; font-size: 13px; color: var(--ink-2); }
+  .shot .source { margin-top: 8px; }
+  .source a { color: inherit; }
+
+  /* ---------- refs ---------- */
+  .refs { margin: 0; padding-left: 18px; font-size: 14px; color: var(--ink-2); }
+  .refs li { margin-bottom: 6px; }
+  .refs a { color: var(--accent); text-decoration: none; word-break: break-all; }
+
+  /* ---------- spectrum ---------- */
+  .spectrum { display: grid; gap: 14px; }
+  .spectrum-row { display: grid; grid-template-columns: 110px minmax(0, 1fr) 110px; align-items: center; gap: 16px; font-size: 13px; }
+  .spectrum-label { color: var(--ink-3); }
+  .spectrum-row .spectrum-label:last-child { text-align: right; }
+  .spectrum-track { position: relative; display: flex; justify-content: space-between; align-items: center; height: 16px; }
+  .spectrum-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 2px; background: var(--line); transform: translateY(-50%); }
+  .spectrum-track i { position: relative; width: 10px; height: 10px; border-radius: 50%; background: var(--bg); border: 2px solid var(--line); }
+  .spectrum-track i.is-on { width: 16px; height: 16px; background: var(--accent); border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft); }
+
+  /* ---------- compare ---------- */
+  .compare { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .compare-col { border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+  .compare-col h3 { font-size: 14px; margin: 0 0 10px; }
+  .compare-col.is-do h3 { color: var(--good); }
+  .compare-col.is-dont h3 { color: var(--bad); }
+  .compare-col.is-do h3::before { content: "✓ "; }
+  .compare-col.is-dont h3::before { content: "✕ "; }
+  .compare-col ul { list-style: none; margin: 0; padding: 0; }
+  .compare-col li { padding: 8px 0; border-top: 1px solid var(--line); font-size: 14px; color: var(--ink); }
+  .compare-col li:first-child { border-top: 0; padding-top: 0; }
+  .compare-col li .note { display: block; font-size: 13px; color: var(--ink-3); margin-top: 2px; }
+
+  /* ---------- say ---------- */
+  .say { margin: 8px 0 0; padding: 8px 12px; border-radius: 8px; background: var(--surface); font-size: 14px; color: var(--ink); border-left: 3px solid var(--line); }
+  .say.is-do { background: var(--good-soft); border-left-color: var(--good); }
+  .say.is-dont { background: var(--bad-soft); border-left-color: var(--bad); color: var(--ink-2); }
+
+  /* ---------- design specimen ---------- */
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .swatch { border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; font-size: 13px; }
+  .swatch .chip-color { display: block; height: 72px; border-bottom: 1px solid var(--line); }
+  .swatch strong, .swatch code, .swatch .note { display: block; padding: 0 12px; }
+  .swatch strong { padding-top: 10px; font-size: 14px; }
+  .swatch code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--ink-2); margin-top: 2px; }
+  .swatch .note { color: var(--ink-3); padding-bottom: 12px; margin-top: 4px; }
+  .swatches.is-small { grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+  .swatches.is-small .chip-color { height: 40px; }
+  .swatches.is-small .note { display: none; }
+  .swatches + .kv { margin-top: 16px; }
+  .type-scale { border: 1px solid var(--line); border-radius: var(--radius); }
+  .type-row { display: grid; grid-template-columns: 160px minmax(0, 1fr); gap: 16px; align-items: baseline; padding: 16px 18px; border-top: 1px solid var(--line); }
+  .type-row:first-child { border-top: 0; }
+  .type-meta { font-size: 12px; color: var(--ink-3); }
+  .type-meta strong { display: block; font-size: 13px; color: var(--ink); }
+  .type-sample { color: var(--ink); overflow-wrap: anywhere; }
+  .token-rows { display: grid; gap: 10px; }
+  .token-row { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 16px; align-items: center; font-size: 13px; }
+  .token-box { width: 48px; height: 48px; background: var(--accent-soft); border: 1px solid var(--line); }
+  .token-box.is-space { height: 16px; min-width: 2px; border: 0; border-radius: 2px; background: var(--accent); }
+  .token-meta { color: var(--ink-2); }
+  .token-meta code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: var(--ink-3); margin-left: 6px; }
+  .dot { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 1px solid var(--line); vertical-align: -1px; margin-right: 6px; }
+  .ds-preview {
+    border: 1px solid var(--line); border-radius: var(--radius); padding: 28px;
+    background: var(--ds-bg, #fff); color: var(--ds-text, var(--ink));
+    font-family: var(--ds-font, inherit); display: grid; gap: 20px;
+  }
+  .ds-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+  .ds-btn {
+    font: inherit; font-size: var(--ds-btn-size, 15px); font-weight: 600; cursor: default;
+    padding: var(--ds-btn-pad, 12px 20px); border-radius: var(--ds-btn-radius, var(--ds-radius, 10px)); white-space: nowrap;
+    background: var(--ds-primary, var(--accent)); color: var(--ds-on-primary, #fff); border: 1px solid transparent;
+  }
+  .ds-btn.is-secondary { background: var(--ds-surface, var(--surface)); color: var(--ds-text, var(--ink)); border-color: var(--ds-secondary-border, var(--ds-border, var(--line))); }
+  .ds-card {
+    background: var(--ds-surface, #fff); border: 1px solid var(--ds-border, var(--line));
+    border-radius: var(--ds-radius, 12px); box-shadow: var(--ds-shadow, none); padding: 18px; max-width: 360px;
+  }
+  .ds-card h4 { margin: 0 0 4px; font-size: var(--ds-title-size, 17px); }
+  .ds-card p { margin: 0; font-size: 14px; color: var(--ds-muted, var(--ink-2)); }
+  .ds-input {
+    font: inherit; font-size: 15px; width: 100%; max-width: 360px; padding: 12px 14px;
+    border-radius: var(--ds-input-radius, var(--ds-radius, 10px)); border: 1px solid var(--ds-border, var(--line));
+    background: var(--ds-bg, #fff); color: var(--ds-text, var(--ink));
+  }
+  .ds-chip { font-size: 13px; padding: 6px 12px; border-radius: 999px; background: var(--ds-surface, #fff); border: 1px solid var(--ds-border, var(--line)); color: var(--ds-text, var(--ink)); }
+  .ds-chip.is-on { border-color: transparent; background: var(--ds-primary-soft, color-mix(in srgb, var(--ds-primary, var(--accent)) 12%, #fff)); color: var(--ds-primary, var(--accent)); }
+  .preview-label { font-size: 12px; color: var(--ink-3); margin: 0 0 8px; font-family: "Pretendard Variable", Pretendard, sans-serif; }
+
+  /* ---------- flow board ---------- */
+  .board { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .board-col { background: var(--surface); border-radius: var(--radius); padding: 12px; min-height: 96px; }
+  .board-col h3 { display: flex; justify-content: space-between; font-size: 13px; color: var(--ink-2); margin: 0 0 10px; }
+  .board-col h3 .count { color: var(--ink-3); font-weight: 500; }
+  .board-col.is-done h3 { color: var(--good); }
+  .board-item { display: block; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; margin-bottom: 8px; text-decoration: none; color: inherit; }
+  a.board-item:hover { border-color: var(--accent); }
+  .board-item .flow-id { font-size: 11px; font-weight: 700; color: var(--accent); }
+  .board-item strong { display: block; font-size: 14px; margin-top: 2px; }
+  .board-item p { margin: 4px 0 0; font-size: 12px; color: var(--ink-3); }
+
+  /* ---------- phones ---------- */
+  .phones { display: flex; flex-wrap: wrap; gap: 28px 34px; padding: 4px; font-family: var(--ds-font, inherit); }
+  /* 카드 크기는 모든 카드가 같다. 스크롤 화면만 .is-tall(1.5배)·.is-taller(2배)로 높이를 늘린다 */
+  .phone {
+    --phone-w: 196px; --phone-base-h: 420px; --phone-h: calc(var(--phone-base-h) * var(--phone-scale, 1));
+    position: relative; flex: 0 0 var(--phone-w); min-width: 0; /* min-width: 0 — 안의 내용이 넓어도 카드 폭이 늘어나지 않게 */
+  }
+  .phone.is-tall { --phone-scale: 1.5; }
+  .phone.is-taller { --phone-scale: 2; }
+  .phones.is-desktop .phone { --phone-w: 360px; --phone-base-h: 240px; }
+  .is-wide .phones { gap: 40px 48px; }
+  .is-wide .phone { --phone-w: 300px; --phone-base-h: 620px; }
+  .is-wide .phones.is-desktop .phone { --phone-w: 640px; --phone-base-h: 400px; }
+  .phone:not(:last-child)::after { content: "→"; position: absolute; right: -25px; top: 200px; color: var(--ink-3); font-size: 16px; font-family: "Pretendard Variable", Pretendard, sans-serif; }
+  .phone-step { font-size: 12px; color: var(--ink-3); margin-bottom: 6px; font-family: "Pretendard Variable", Pretendard, sans-serif; }
+  .phone-step strong { color: var(--ink); margin-left: 4px; }
+  .phone-screen {
+    position: relative; display: flex; flex-direction: column; gap: 10px; height: var(--phone-h); overflow: hidden;
+    border: 1px solid var(--line); border-radius: 24px; padding: 18px 14px 0;
+    background: var(--ds-bg, #fff); color: var(--ds-text, var(--ink)); box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+  }
+  .phones.is-desktop .phone-screen { border-radius: 12px; }
+  .is-wide .phone-screen { border-radius: 32px; padding: 24px 20px 0; gap: 14px; }
+  .is-wide .phones.is-desktop .phone-screen { border-radius: 14px; }
+  .is-wide .phone:not(:last-child)::after { right: -34px; top: 300px; }
+  .phone-screen .ds-btn { font-size: 13px; padding: 9px 14px; align-self: flex-start; }
+  .phone-screen .ds-card { padding: 12px; max-width: none; }
+  .phone-screen .ds-card h4 { font-size: 14px; }
+  .phone-screen .ds-card p { font-size: 12px; }
+  .phone-screen .ds-input { font-size: 13px; padding: 9px 11px; max-width: none; }
+  .phone-screen p { margin: 0; }
+  .phone-screen p.ph-title { font-size: 17px; font-weight: 700; line-height: 1.35; color: var(--ds-text, var(--ink)); }
+  .phone-screen p.ph-label { font-size: 12px; font-weight: 600; color: var(--ds-text, var(--ink)); margin-top: 4px; }
+  .phone-screen p.ph-text { font-size: 12px; line-height: 1.5; color: var(--ds-muted, var(--ink-2)); }
+  .ph-img { display: flex; align-items: center; justify-content: center; height: 88px; border-radius: var(--ds-radius, 10px); background: var(--ds-surface-alt, #eeeef0); font-size: 11px; color: var(--ds-muted, var(--ink-3)); }
+  .ph-img.is-map { height: 140px; background-image: linear-gradient(var(--ds-border, #dcdce0) 1px, transparent 1px), linear-gradient(90deg, var(--ds-border, #dcdce0) 1px, transparent 1px); background-size: 22px 22px; }
+  .ph-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ph-sheet { margin: auto -14px 0; padding: 16px 14px 18px; border-radius: 18px 18px 0 0; background: var(--ds-surface, #fff); border-top: 1px solid var(--ds-border, var(--line)); box-shadow: 0 -6px 20px rgba(0,0,0,0.08); display: flex; flex-direction: column; gap: 8px; }
+  .ph-list { display: grid; gap: 8px; }
+  .ph-item { display: flex; gap: 10px; align-items: center; font-size: 12px; padding: 8px; border: 1px solid var(--ds-border, var(--line)); border-radius: var(--ds-radius, 10px); }
+  .ph-item::before { content: ""; flex: 0 0 32px; height: 40px; border-radius: 6px; background: var(--ds-surface-alt, #eeeef0); }
+  .ph-more {
+    position: absolute; left: 0; right: 0; bottom: 0; padding: 32px 0 12px; text-align: center; font-size: 11px;
+    color: var(--ds-muted, var(--ink-3)); background: linear-gradient(to bottom, transparent, var(--ds-bg, #fff) 55%);
+  }
+  .ph-bar { margin-top: auto; display: flex; justify-content: space-around; border-top: 1px solid var(--ds-border, var(--line)); padding: 10px 0 14px; font-size: 11px; color: var(--ds-muted, var(--ink-3)); }
+  .phone-note { font-size: 12px; color: var(--ink-2); margin-top: 8px; font-family: "Pretendard Variable", Pretendard, sans-serif; }
+
+  /* ---------- chips ---------- */
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip { border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; font-size: 14px; color: var(--ink-2); }
+  .chip.is-selected { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+  .chip.is-selected::before { content: "✓ "; }
+
+  .footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--line); font-size: 12px; color: var(--ink-3); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: minmax(0, 1fr); }
+    .sidebar { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); padding: 16px; }
+    .nav { margin-top: 12px; display: flex; gap: 4px; overflow-x: auto; }
+    .nav-group, .toc { display: none; }
+    .nav a { white-space: nowrap; }
+    .nav .is-pending > a::after { content: none; }
+    main { padding: 32px 16px 64px; }
+    .cover h1 { font-size: 30px; }
+    .lead { font-size: 17px; }
+    .flow { grid-template-columns: 1fr; gap: 20px; }
+    .flow-step:not(:last-child)::after { content: "↓"; right: auto; left: 50%; top: auto; bottom: -20px; transform: translateX(-50%); }
+    .grid { grid-template-columns: 1fr; }
+    .shots { grid-template-columns: 1fr; }
+    .compare { grid-template-columns: 1fr; }
+    .type-row { grid-template-columns: 1fr; gap: 6px; }
+    .ds-preview { padding: 18px; }
+    .board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .is-wide .phone, .is-wide .phones.is-desktop .phone { flex-basis: 100%; max-width: 340px; }
+    .phone:not(:last-child)::after, .is-wide .phone:not(:last-child)::after { content: "↓"; right: auto; left: 50%; top: auto; bottom: -26px; transform: translateX(-50%); }
+    .spectrum-row { grid-template-columns: 72px minmax(0, 1fr) 72px; gap: 10px; }
+    .shots.is-mobile { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .kv { grid-template-columns: 1fr; gap: 2px; }
+    .kv dd { margin-bottom: 10px; }
+  }
+  @media print {
+    .layout { grid-template-columns: 1fr; }
+    .sidebar { display: none; }
+    main { max-width: none; padding: 0; }
+    .section { break-inside: avoid; }
+    .shot, .card { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+<div class="layout">
+
+  <aside class="sidebar">
+    <div class="brand">모먼트립<small>Vibe Studio</small></div>
+    <ul class="nav">
+      <li class="nav-group">기획 문서</li>
+      <li><a href="PRODUCT.html"><span class="step">1</span>Product</a></li>
+      <li><a href="BENCHMARK.html"><span class="step">2</span>Benchmark</a></li>
+      <li class="is-current">
+        <a href="VOICE.html"><span class="step">3</span>Voice</a>
+        <ul class="toc">
+          <li><a href="#summary">요약</a></li>
+          <li><a href="#traits">성격</a></li>
+          <li><a href="#tone">톤</a></li>
+          <li><a href="#vocab">어휘</a></li>
+          <li><a href="#context">상황별 톤</a></li>
+          <li><a href="#style">표기 규칙</a></li>
+          <li><a href="#dos">Do · Don't</a></li>
+        </ul>
+      </li>
+      <li class="is-pending"><a href="DESIGN.html"><span class="step">4</span>Design</a></li>
+      <li class="is-pending"><a href="FLOWS.html"><span class="step">5</span>Flows</a></li>
+    </ul>
+  </aside>
+
+  <main>
+    <header class="cover">
+      <div class="eyebrow">Voice</div>
+      <h1>모먼트립</h1>
+      <p class="lead">지난 여행의 순간에 다시 설레고, 다음 여행을 기대하게 만드는 밝고 다정한 여행 메이트</p>
+      <div class="meta">
+        <span class="tag">확정 이름</span>
+        <span class="tag">2026-10-16</span>
+      </div>
+    </header>
+
+    <section class="section" id="summary">
+      <div class="section-label">Summary</div>
+      <h2>이렇게 말해요</h2>
+      <div class="callout">
+        <p class="big">여행 가기 전부터 들떠 있고 다녀와서도 "다음엔 어디 갈까?" 하는 설레는 여행 메이트처럼 말해요. 내 추억에 같이 신나 하지만, 고르고 쓰는 건 언제나 나에게 맡겨요.</p>
+      </div>
+    </section>
+
+    <section class="section" id="traits">
+      <div class="section-label">Traits</div>
+      <h2>핵심 성격</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>설레는</h3>
+          <dl class="kv"><dt>우리는</dt><dd>여행과 추억 앞에서 진심으로 들뜬 마음을 짧고 밝게 전해요.</dd><dt>우리가 아닌 것</dt><dd>느낌표와 이모지를 쏟아내는 호들갑.</dd></dl>
+          <p class="say is-do">“오사카 여행 잘 다녀왔어요? 🎉 그 순간들, 사진으로 다시 꺼내 볼까요?”</p>
+          <p class="say is-dont">“🎉🎉 오사카 여행 완료!!! 사진 올리고 인생 영상 만들어 봐요!!! 🔥”</p>
+        </div>
+        <div class="card">
+          <h3>다정한</h3>
+          <dl class="kv"><dt>우리는</dt><dd>친구처럼 먼저 반기고, 부담 없이 시작하게 손을 내밀어요.</dd><dt>우리가 아닌 것</dt><dd>왜 안 했냐고 챙기고 캐묻는 오지랖.</dd></dl>
+          <p class="say is-do">“아직 마그넷이 없네요. 첫 여행을 붙여 볼까요? 지난 여행도 좋아요 🧳”</p>
+          <p class="say is-dont">“오늘 사진 왜 안 올렸어요? 여행 잘 다니고 있는 거죠? 😢”</p>
+        </div>
+        <div class="card">
+          <h3>유쾌한</h3>
+          <dl class="kv"><dt>우리는</dt><dd>가볍고 밝은 말로 기록하는 시간을 즐겁게 만들어요.</dd><dt>우리가 아닌 것</dt><dd>돈이나 추억을 놀림거리로 삼는 장난.</dd></dl>
+          <p class="say is-do">“완성! 그때 그 장면들, 노래랑 같이 다시 떠나 볼까요? ✨”</p>
+          <p class="say is-dont">“ㅋㅋㅋ 돈 엄청 썼네요?? 텅장 축하드려요~”</p>
+        </div>
+        <div class="card">
+          <h3>센스 있는</h3>
+          <dl class="kv"><dt>우리는</dt><dd>비슷한 사진을 묶어 주고 영상을 엮어 주며 슬쩍 도와요.</dd><dt>우리가 아닌 것</dt><dd>내 취향을 대신 판단하는 잘난 척.</dd></dl>
+          <p class="say is-do">“같은 곳에서 찍은 사진끼리 모아 뒀어요. 제일 마음에 드는 한 장을 골라 주세요.”</p>
+          <p class="say is-dont">“이 사진은 구도가 별로라 빼 드렸어요. 이게 더 낫죠?”</p>
+        </div>
+        <div class="card">
+          <h3>함께하는</h3>
+          <dl class="kv"><dt>우리는</dt><dd>여행의 처음부터 끝까지 옆에 있지만, 기록의 주인은 나라는 걸 지켜요.</dd><dt>우리가 아닌 것</dt><dd>내가 쓴 한 줄을 고쳐 주겠다며 끼어드는 것.</dd></dl>
+          <p class="say is-do">“남겨 둔 한 줄이 이 사진이랑 같이 보여요.”</p>
+          <p class="say is-dont">“이 한 줄, 이렇게 바꿔 쓰는 게 더 감성적일 것 같아요!”</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="tone">
+      <div class="section-label">Tone</div>
+      <h2>톤 스펙트럼</h2>
+      <div class="spectrum">
+        <div class="spectrum-row"><span class="spectrum-label">Formal</span><div class="spectrum-track"><i></i><i></i><i></i><i class="is-on"></i><i></i></div><span class="spectrum-label">Casual</span></div>
+        <div class="spectrum-row"><span class="spectrum-label">Serious</span><div class="spectrum-track"><i></i><i></i><i></i><i class="is-on"></i><i></i></div><span class="spectrum-label">Playful</span></div>
+        <div class="spectrum-row"><span class="spectrum-label">Authority</span><div class="spectrum-track"><i></i><i></i><i></i><i></i><i class="is-on"></i></div><span class="spectrum-label">Peer-level</span></div>
+        <div class="spectrum-row"><span class="spectrum-label">Technical</span><div class="spectrum-track"><i></i><i></i><i></i><i></i><i class="is-on"></i></div><span class="spectrum-label">Simple</span></div>
+        <div class="spectrum-row"><span class="spectrum-label">Reserved</span><div class="spectrum-track"><i></i><i></i><i></i><i class="is-on"></i><i></i></div><span class="spectrum-label">Enthusiastic</span></div>
+        <div class="spectrum-row"><span class="spectrum-label">Bold</span><div class="spectrum-track"><i></i><i></i><i class="is-on"></i><i></i><i></i></div><span class="spectrum-label">Subtle</span></div>
+      </div>
+    </section>
+
+    <section class="section" id="vocab">
+      <div class="section-label">Vocabulary</div>
+      <h2>어휘</h2>
+      <div class="compare">
+        <div class="compare-col is-do">
+          <h3>쓰는 말</h3>
+          <ul>
+            <li><strong>순간</strong><span class="note">모먼트립의 핵심 단어. 사진·한 줄·영상을 부를 때</span></li>
+            <li><strong>잘 다녀왔어요?</strong><span class="note">여행이 끝난 뒤 첫 인사. 친구처럼 먼저 반기기</span></li>
+            <li><strong>다시 꺼내 볼까요?</strong><span class="note">지난 여행을 열어 보게 할 때</span></li>
+            <li><strong>다시 떠나 볼까요?</strong><span class="note">영상·지도로 추억을 되짚을 때</span></li>
+            <li><strong>~해 볼까요? / ~해 봐요</strong><span class="note">다음 행동을 권할 때. 명령 대신 제안</span></li>
+            <li><strong>붙이다 / 붙여 볼까요?</strong><span class="note">여행을 보드에 마그넷으로 더할 때</span></li>
+            <li><strong>모으다 / 모아 뒀어요</strong><span class="note">비슷한 사진·추억을 정리해 줄 때</span></li>
+            <li><strong>골라 주세요 / 마음에 드는</strong><span class="note">선택을 사용자에게 맡길 때</span></li>
+            <li><strong>그때 그 장면</strong><span class="note">추억을 떠올리게 할 때</span></li>
+            <li><strong>다음엔 어디 갈까요?</strong><span class="note">다음 여행을 기대하게 할 때</span></li>
+            <li><strong>이번 여행엔 이렇게 썼어요</strong><span class="note">경비를 담담하게 보여 줄 때</span></li>
+            <li><strong>올리기 / 고르기</strong><span class="note">업로드·큐레이션 대신 쉬운 우리말</span></li>
+            <li><strong>완성!</strong><span class="note">영상·기록이 끝났을 때 짧은 축하</span></li>
+            <li><strong>지난 여행도 좋아요</strong><span class="note">처음 시작하는 사람의 부담을 덜 때</span></li>
+          </ul>
+        </div>
+        <div class="compare-col is-dont">
+          <h3>피하는 말</h3>
+          <ul>
+            <li><strong>지금 정리하세요 / 미루면 영영 못 해요</strong><span class="note">기록을 숙제로 만드는 재촉</span></li>
+            <li><strong>아직 정리 안 한 사진 N장</strong><span class="note">남은 양으로 압박하기</span></li>
+            <li><strong>예산 초과 / 절약하세요</strong><span class="note">여행 경비로 죄책감 주기</span></li>
+            <li><strong>텅장 / 돈 엄청 썼네요</strong><span class="note">돈을 놀림거리로 삼기</span></li>
+            <li><strong>빼 드렸어요 / 이게 더 낫죠?</strong><span class="note">내 취향을 대신 판단하기</span></li>
+            <li><strong>이렇게 바꿔 쓰면 더 감성적</strong><span class="note">내 기록에 끼어들기</span></li>
+            <li><strong>AI가 알아서 골라 드려요</strong><span class="note">고르는 건 나라는 원칙과 반대</span></li>
+            <li><strong>인생샷 / 감성 미쳤다 / #해시태그</strong><span class="note">남에게 보여 주는 SNS 인플루언서 톤</span></li>
+            <li><strong>특가 / 마감 임박 / 지금 떠나세요</strong><span class="note">여행 예약 앱의 세일즈 톤</span></li>
+            <li><strong>추천 코스 TOP 10</strong><span class="note">남의 여행 같은 가이드북 톤</span></li>
+            <li><strong>그날의 빛 / 마음 어딘가에 머물러</strong><span class="note">무겁고 오글거리는 감성 에세이 톤</span></li>
+            <li><strong>프로처럼 / 추적하세요</strong><span class="note">대단한 모험만 여행 같은 프로 모험가 톤</span></li>
+            <li><strong>예산 관리 / 지출 분석 (첫인상 문구)</strong><span class="note">가계부 도구처럼 보이게 하는 톤</span></li>
+            <li><strong>이동 거리 N km 달성 / N개국 정복</strong><span class="note">추억보다 성과를 앞세우는 기록 톤</span></li>
+            <li><strong>다른 사용자들은 평균…</strong><span class="note">남과 비교하기</span></li>
+            <li><strong>업로드해 주세요 / 완료되지 않았습니다</strong><span class="note">딱딱한 시스템 안내문</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="context">
+      <div class="section-label">Context</div>
+      <h2>상황별 톤</h2>
+      <p>설렘·다정함은 늘 유지하고, 맥락에 따라 설렘의 크기만 조절한다. 경비·에러 안내에서는 설렘을 낮추고 다정함을 올린다.</p>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>맥락</th><th>톤 조절</th><th>예시 문구</th></tr></thead>
+          <tbody>
+            <tr><th>온보딩 / 첫 화면</th><td>설렘 중간, 다정함 높게. 부담 없이 시작하게</td><td>"다녀온 여행의 순간들, 여기에 하나씩 모아 볼까요?"</td></tr>
+            <tr><th>빈 상태(empty state)</th><td>다정함 높게. 지난 여행도 괜찮다고 알려 주기</td><td>"아직 마그넷이 없네요. 첫 여행을 붙여 볼까요? 지난 여행도 좋아요 🧳"</td></tr>
+            <tr><th>성공/완료 피드백</th><td>설렘 가장 높게. 짧은 축하 + 다시 떠나 보자는 제안</td><td>"완성! 그때 그 장면들, 노래랑 같이 다시 떠나 볼까요? ✨"</td></tr>
+            <tr><th>에러/안내</th><td>설렘 낮게, 다정함 높게. 이모지 없이 차분하게 해결책 먼저</td><td>"사진을 불러오지 못했어요. 잠시 후 다시 올려 볼까요?"</td></tr>
+            <tr><th>경비 정리</th><td>담담하게. 평가 없이 사실만, 이모지 없이</td><td>"이번 여행엔 이렇게 썼어요. 숙소가 가장 컸네요."</td></tr>
+            <tr><th>푸시 알림</th><td>설렘 중간. 반기기 + 가벼운 제안, 재촉 금지</td><td>"오사카 여행 잘 다녀왔어요? 🎉 그 순간들, 사진으로 다시 꺼내 볼까요?"</td></tr>
+            <tr><th>랜딩/소개 페이지</th><td>설렘 높게. 지난 추억과 다음 여행을 함께 기대하게</td><td>"다녀와서 사진만 올리면, 여행의 순간들이 영상이 돼요. 다음엔 어디 갈까요?"</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="section" id="style">
+      <div class="section-label">Style</div>
+      <h2>표기 규칙</h2>
+      <dl class="kv">
+        <dt>존댓말/반말</dt><dd>존댓말 "~해요"체 기본. "~하세요" 같은 명령형보다 "~할까요?", "~해 봐요"처럼 권하기</dd>
+        <dt>문장 길이</dt><dd>짧고 밝게. 한 문구는 1~2문장</dd>
+        <dt>이모지</dt><dd>한 문구에 최대 1개. 설렘을 더할 때만 쓰고, 에러·경비 안내에는 쓰지 않기</dd>
+        <dt>느낌표</dt><dd>한 문구에 최대 1개</dd>
+        <dt>경비 표현</dt><dd>"초과", "절약" 대신 "이번 여행엔 이렇게 썼어요"처럼 담담하게</dd>
+        <dt>외래어</dt><dd>"업로드", "큐레이션"보다 "올리기", "고르기"처럼 쉬운 우리말 먼저. 단 "모먼트립", "마그넷"은 그대로</dd>
+        <dt>쉬운 말</dt><dd>처음 쓰는 사람도 바로 알아듣게</dd>
+      </dl>
+    </section>
+
+    <section class="section" id="dos">
+      <div class="section-label">Do · Don't</div>
+      <h2>이렇게 쓰고, 이렇게 쓰지 않아요</h2>
+      <div class="compare">
+        <div class="compare-col is-do">
+          <h3>Do</h3>
+          <ul>
+            <li>여행이 끝나면 "잘 다녀왔어요?"처럼 친구처럼 먼저 반겨요.</li>
+            <li>지난 여행을 다시 꺼내 보게 하고, 다음 여행까지 기대하게 해요.</li>
+            <li>다음 행동은 "~해 볼까요?"처럼 제안으로 권해요.</li>
+            <li>사진·영상은 도와서 모아 주되, 고르는 건 사용자에게 맡겨요.</li>
+            <li>주말 국내 여행도 해외 여행만큼 소중하게 다뤄요.</li>
+            <li>경비는 평가 없이 담담하게 보여 줘요.</li>
+            <li>영상이 완성되면 확실하게, 하지만 짧게 축하해요.</li>
+          </ul>
+        </div>
+        <div class="compare-col is-dont">
+          <h3>Don't</h3>
+          <ul>
+            <li>기록을 숙제처럼 재촉하지 않아요. ("미루면 영영 못 해요")</li>
+            <li>경비로 죄책감을 주지 않아요. ("예산을 초과했어요. 절약하세요")</li>
+            <li>돈이나 추억을 놀리지 않아요. ("텅장 축하드려요~")</li>
+            <li>사진을 멋대로 빼거나 내 취향을 대신 판단하지 않아요.</li>
+            <li>사용자가 쓴 한 줄을 고쳐 쓰자고 끼어들지 않아요.</li>
+            <li>느낌표·이모지를 쏟아내는 호들갑이나 무거운 감성 에세이 톤을 쓰지 않아요.</li>
+            <li>세일즈·인플루언서·가이드북·프로 모험가·가계부·"AI가 다 해 드려요" 톤을 따라가지 않아요.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">Vibe Studio · 원본: docs/VOICE.md</footer>
+  </main>
+</div>
+
+<script>
+  // 스크롤 위치에 맞춰 사이드바 목차 강조
+  (function () {
+    var links = [].slice.call(document.querySelectorAll('.toc a[href^="#"]'));
+    var pairs = links.map(function (a) { return [a, document.getElementById(a.getAttribute('href').slice(1))]; })
+                     .filter(function (p) { return p[1]; });
+    if (!pairs.length) return;
+    function update() {
+      var current = pairs[0];
+      var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+      if (atBottom) current = pairs[pairs.length - 1];
+      else pairs.forEach(function (p) { if (p[1].getBoundingClientRect().top <= 120) current = p; });
+      pairs.forEach(function (p) { p[0].classList.toggle('is-active', p === current); });
+    }
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  })();
+</script>
+</body>
+</html>
