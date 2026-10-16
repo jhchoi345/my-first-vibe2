@@ -14,7 +14,7 @@ function AddSlot() {
     </button>`;
 }
 
-export function BoardScreen() {
+export function BoardScreen({ justAdded, onSeen }) {
   const trips = listTrips();
 
   if (!trips.length) {
@@ -36,12 +36,19 @@ export function BoardScreen() {
   // 고르는 중인 여행은 누르면 이어서 고르기, 다 고른 여행은 여행 상세로
   const open = (t) => go(t.status === 'done' ? `/trip/${t.id}` : `/trip/${t.id}/${t.groups?.length ? 'pick' : 'upload'}`);
 
+  const doneCount = trips.filter((t) => t.status === 'done').length;
+  const celebrate = justAdded && trips.some((t) => t.id === justAdded);
+
   return html`
     <${Screen} className="pb-8 pt-8">
       <h1 className="text-section">내 마그넷 보드</h1>
       <div className="mt-6 grid grid-cols-2 gap-x-4 gap-y-6">
-        ${trips.map((t, i) => html`<${Magnet} key=${t.id} trip=${t} index=${i} onClick=${() => open(t)} />`)}
+        ${trips.map((t, i) => html`<${Magnet} key=${t.id} trip=${t} index=${i} isNew=${t.id === justAdded}
+          onClick=${() => { onSeen(); open(t); }} />`)}
         <${AddSlot} />
       </div>
+      ${celebrate && html`<p role="status" className="mt-8 text-center text-card-title">
+        ${doneCount === 1 ? '완성! 첫 마그넷이 붙었어요' : '완성! 마그넷이 붙었어요'}
+      </p>`}
     </${Screen}>`;
 }

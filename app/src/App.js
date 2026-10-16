@@ -8,6 +8,7 @@ import { BoardScreen } from './screens/Board.js';
 import { TripNewScreen } from './screens/TripNew.js';
 import { UploadScreen } from './screens/Upload.js';
 import { PickScreen } from './screens/Pick.js';
+import { TripDetailScreen } from './screens/TripDetail.js';
 
 const EMPTY_DRAFT = { cities: [''], start: '', end: '' };
 
@@ -17,6 +18,7 @@ export function App() {
   // 여행 만들기 입력은 사진 선택을 취소하거나 화면을 오가도 그대로 남긴다
   const [draft, setDraft] = useState(EMPTY_DRAFT);
   const [pendingFiles, setPendingFiles] = useState(null);
+  const [justAdded, setJustAdded] = useState(null); // 방금 붙은 마그넷 (톡! 장면)
 
   // 로그인 전엔 시작 화면만, 로그인 뒤엔 시작 화면 대신 보드로
   useEffect(() => {
@@ -32,15 +34,17 @@ export function App() {
   }
 
   function onPicked(tripId) {
-    updateTrip(tripId, { status: 'done' });
+    updateTrip(tripId, { status: 'done', doneAt: new Date().toISOString() });
+    setJustAdded(tripId);
     go('/board', { replace: true });
   }
 
   if (!signedIn || path === '/') return html`<${StartScreen} />`;
   if (path === '/trip/new') return html`<${TripNewScreen} draft=${draft} setDraft=${setDraft} onPhotos=${onPhotos} />`;
 
-  const m = path.match(/^\/trip\/([^/]+)\/(upload|pick)$/);
+  const m = path.match(/^\/trip\/([^/]+)(?:\/(upload|pick))?$/);
   if (m && m[2] === 'upload') return html`<${UploadScreen} key=${m[1]} tripId=${m[1]} files=${pendingFiles} clearFiles=${() => setPendingFiles(null)} />`;
   if (m && m[2] === 'pick') return html`<${PickScreen} key=${m[1]} tripId=${m[1]} onDone=${onPicked} />`;
-  return html`<${BoardScreen} />`;
+  if (m) return html`<${TripDetailScreen} key=${m[1]} tripId=${m[1]} />`;
+  return html`<${BoardScreen} justAdded=${justAdded} onSeen=${() => setJustAdded(null)} />`;
 }
