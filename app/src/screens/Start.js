@@ -10,10 +10,10 @@ import { Screen, PrimaryButton, SecondaryButton, ErrorRow } from '../ui.js';
 // 사진: Unsplash 무료 라이선스 (https://unsplash.com/license), 긴 변 480px로 줄여 app/assets/start/에 둠
 const PREVIEW = [
   { city: '강릉', img: 'assets/start/gangneung.jpg' }, // yoo 89 — https://unsplash.com/photos/4wbQ_Tyfoa4
+  { city: '런던', img: 'assets/start/london.jpg' }, // enrico bet — https://unsplash.com/photos/MdJq0zFUwrw
+  { city: '파리', img: 'assets/start/paris.jpg' }, // Filip Andrejevic — https://unsplash.com/photos/FJYS6vuf39k
+  { city: '프라하', img: 'assets/start/prague.jpg' }, // Bianka Magócs — https://unsplash.com/photos/biJhc4IEPpQ
   { city: '오사카', img: 'assets/start/osaka.jpg' }, // Laura Barry — https://unsplash.com/photos/8ZnNLUr3RRc
-  { city: '제주', img: 'assets/start/jeju.jpg' }, // WS Chae — https://unsplash.com/photos/-jVX4mW1Uac
-  { city: '파리', img: 'assets/start/paris.jpg' }, // Anthony DELANOIX — https://unsplash.com/photos/QAwciFlS1g4
-  { city: '방콕', img: 'assets/start/bangkok.jpg' }, // Alejandro Cartagena — https://unsplash.com/photos/qeibBI7w4fQ
 ];
 
 // 겹쳐 쌓인 카드 → 가운데를 중심으로 휘어진 3D 아치 (21st.dev "Panoramic Spread Hero"를 시작 화면 크기에 맞춤)
